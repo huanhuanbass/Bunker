@@ -1,5 +1,6 @@
 import streamlit as st
-st.write('Test')
+st.set_page_config(layout="wide")
+st.write('Made by HuanHuan')
 
 import pandas as pd
 import numpy as np
