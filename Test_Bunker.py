@@ -1,5 +1,5 @@
 import streamlit as st
-import plotly.express as px
+st.write('Test')
 
 import pandas as pd
 import numpy as np
@@ -9,6 +9,8 @@ from dateutil import relativedelta
 from pandas.tseries.offsets import BDay
 from ta.volatility import BollingerBands
 from ta.trend import SMAIndicator
+
+import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
