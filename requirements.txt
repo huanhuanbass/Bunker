@@ -1,8 +1,5 @@
 pandas
 numpy
 streamlit
-plotly.express
-ta.volatility
-ta.trend
 ta
 plotly
