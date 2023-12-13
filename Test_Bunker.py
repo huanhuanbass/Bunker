@@ -1,6 +1,7 @@
 import streamlit as st
 st.set_page_config(layout="wide")
-
+st.write('project updated on 20231213')
+st.write('data updated daily')
 
 import pandas as pd
 import numpy as np
@@ -18,7 +19,7 @@ import plotly.graph_objects as go
 #Getting Bunker Data
 st.text('----Getting Bunker Data...')
 
-@st.cache_data
+@st.cache_data(ttl=3600)
 def load_bunker_data():
     bunker=pd.read_excel('Historical_data_-_Bunker_Prices.xlsx')
 
