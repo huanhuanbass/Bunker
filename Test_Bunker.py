@@ -2,6 +2,7 @@ import streamlit as st
 st.set_page_config(layout="wide")
 st.write('project updated on 20231213')
 st.write('data updated daily')
+st.write('cache cleared hourly (slightly longer waiting time for the first refresh every hour)')
 
 import pandas as pd
 import numpy as np
@@ -50,7 +51,7 @@ if 'bunker_f' not in st.session_state:
     st.session_state['bunker_f']=bunker_f
 
 
-st.text('Bunker Data Done!...')
+st.text('Bunker Data Retrieved!...')
 
 cutoff = pd.to_datetime('today')
 curryear=cutoff.year
