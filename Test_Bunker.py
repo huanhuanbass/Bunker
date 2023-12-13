@@ -1,6 +1,6 @@
 import streamlit as st
 st.set_page_config(layout="wide")
-st.write('Made by HuanHuan')
+
 
 import pandas as pd
 import numpy as np
@@ -64,6 +64,7 @@ plot_axis=dict(tickfont = dict(size=15))
 
 st.title('Bunker')
 st.text('Dry Bulk Freight (Bunker) Interactive Dashboard')
+st.write('Made by Huanyu')
 
 st.markdown('## **Candle Chart**')
 
@@ -272,7 +273,7 @@ st.plotly_chart(lplot)
 st.markdown('#### **----Rolling Contracts**')
 
 rangelist_r=st.selectbox('Select Range',options=['Year to Date','Month to Date','Last Week to Date','All'],key='101')
-sllist_r=st.multiselect('Select Contracts (+n Months, 0 means "Spot")',options=sing5_pt2.columns,default=[0,1,2,3,4,5,6,9,12,24],key='102')
+sllist_r=st.multiselect('Select Contracts (+n Months)',options=sing5_pt2.columns,default=[0,1,2,3,4,5,6,9,12,24],key='102')
 sing5_sl=sing5_pt2[sllist_r]
 
 today = pd.to_datetime('today')
@@ -324,7 +325,7 @@ st.plotly_chart(contractplot)
 st.markdown('#### **----Rolling Contracts**')
 
 rangelist_r=st.selectbox('Select Range',options=['Year to Date','Month to Date','Last Week to Date','All'],key='205')
-contractlist_r=st.selectbox('Select Contracts (+n Months, 0 means "Spot")',options=list(sing5_pt2.columns),key='201')
+contractlist_r=st.selectbox('Select Contracts (+n Months)',options=list(sing5_pt2.columns),key='201')
 bb_r=st.number_input('Bollinger Bands Window',value=20,key='202')
 ma1_r=st.number_input('Short Term Moving Average Window',value=20,key='203')
 ma2_r=st.number_input('Long Term Moving Average Window',value=50,key='204')
@@ -359,7 +360,7 @@ contractplot.update_layout(title_font_color=plot_title_font_color,title_font_siz
 st.plotly_chart(contractplot)
 
 st.header(type+' Spot and Rolling FFA Contracts Seasonality')
-contractlist_r=st.selectbox('Select Contracts (+n Months, 0 means "Spot")',options=list(sing5_pt2.columns),key='211')
+contractlist_r=st.selectbox('Select Contracts (+n Months)',options=list(sing5_pt2.columns),key='211')
 freq=st.radio('Select Frequency',options=['Weekly','Monthly','Quarterly'],key='spotfreq')
 sing5_sp=sing5_pt2[[contractlist_r]]
 sing5_sp.index=pd.to_datetime(sing5_sp.index)
@@ -449,8 +450,8 @@ if tsp1!=tsp2:
     st.plotly_chart(tspplot)
 
 st.markdown('#### **----Rolling Contracts**')
-tsp1_r=st.selectbox('Select Contracts (+n Months, 0 means "Spot")',options=[1]+list(sing5_pt2.columns))
-tsp2_r=st.selectbox('Select Contracts (+n Months, 0 means "Spot")',options=[2]+list(sing5_pt2.columns))
+tsp1_r=st.selectbox('Select Contracts (+n Months)',options=[1]+list(sing5_pt2.columns))
+tsp2_r=st.selectbox('Select Contracts (+n Months)',options=[2]+list(sing5_pt2.columns))
 
 if tsp1_r!=tsp2_r:
     sing5_tsp=sing5_pt2[[tsp1_r,tsp2_r]]
@@ -619,7 +620,7 @@ type2_pt2.columns=type2_pt2.columns.astype('int64')
 rsp_opt=pd.Series(type1_pt2.columns.values)
 
 
-rsp=st.selectbox('Select Contracts (+n Months, 0 means "Spot")',options=['1']+list(rsp_opt),key='300')
+rsp=st.selectbox('Select Contracts (+n Months)',options=['1']+list(rsp_opt),key='300')
 
 type1_pt2=type1_pt2.add_prefix(type1+'+M',axis=1)
 type2_pt2=type2_pt2.add_prefix(type2+'+M',axis=1)
