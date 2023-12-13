@@ -1,8 +1,8 @@
 import streamlit as st
 st.set_page_config(layout="wide")
 st.write('project updated on 20231213')
-st.write('data updated daily')
-st.write('cache cleared hourly (slightly longer waiting time for the first refresh every hour)')
+
+
 
 import pandas as pd
 import numpy as np
@@ -19,6 +19,7 @@ import plotly.graph_objects as go
 
 #Getting Bunker Data
 st.text('----Getting Bunker Data...')
+st.text('cache cleared hourly (slightly longer waiting time for the first refresh every hour)')
 
 @st.cache_data(ttl=3600)
 def load_bunker_data():
