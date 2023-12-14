@@ -1,6 +1,6 @@
 import streamlit as st
 st.set_page_config(layout="wide")
-st.write('project updated on 20231213')
+st.write('project updated on 20231214')
 
 
 
@@ -19,9 +19,8 @@ import plotly.graph_objects as go
 
 #Getting Bunker Data
 st.text('----Getting Bunker Data...')
-st.text('cache cleared hourly (slightly longer waiting time for the first refresh every hour)')
 
-@st.cache_data(ttl=3600)
+@st.cache_data(ttl=43200)
 def load_bunker_data():
     bunker=pd.read_excel('Historical_data_-_Bunker_Prices.xlsx')
 
