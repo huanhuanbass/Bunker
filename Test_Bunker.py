@@ -207,7 +207,7 @@ sing5_pt2=pd.merge(sing5_s,sing5_pt2,left_index=True,right_index=True,how='outer
 sing5_pt2.rename(columns={'Spot':0},inplace=True)
 
 
-tday=pd.to_datetime('today')-BDay(1)
+tday=sing5_pt1.index.max()
 lday=tday-BDay(1)
 l2day=tday-BDay(2)
 l3day=tday-BDay(3)
