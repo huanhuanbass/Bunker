@@ -35,8 +35,8 @@ def load_bunker_data():
     bunker_f['Month']=pd.to_numeric(bunker_f['Month'])
     bunker_f['Year']=pd.to_numeric(bunker_f['Year'])
 
-    bunker_f['Archive Month']=bunker_f['Date'].dt.month
-    bunker_f['Archive Year']=bunker_f['Date'].dt.year
+    bunker_f['Archive Month']=pd.to_datetime(bunker_f['Date']).dt.month
+    bunker_f['Archive Year']=pd.to_datetime(bunker_f['Date']).dt.year
     bunker_f['Rolling Month Gap']=(bunker_f['Year']-bunker_f['Archive Year'])*12+(bunker_f['Month']-bunker_f['Archive Month'])
 
     bunker_s['Amount']=bunker_s['Amount'].astype(str)
