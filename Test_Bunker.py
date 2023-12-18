@@ -22,7 +22,7 @@ st.text('----Getting Bunker Data...')
 
 @st.cache_data(ttl=43200)
 def load_bunker_data():
-    bunker=pd.read_excel('Historical_data_-_Bunker_Prices.xlsx')
+    bunker=pd.read_csv('Historical data - Bunker Prices.csv')
 
     bunker_s=bunker[bunker['Period']=='SPOT']
     bunker_f=bunker[bunker['Period']!='SPOT']
@@ -38,6 +38,15 @@ def load_bunker_data():
     bunker_f['Archive Month']=bunker_f['Date'].dt.month
     bunker_f['Archive Year']=bunker_f['Date'].dt.year
     bunker_f['Rolling Month Gap']=(bunker_f['Year']-bunker_f['Archive Year'])*12+(bunker_f['Month']-bunker_f['Archive Month'])
+
+    bunker_s['Amount']=bunker_s['Amount'].astype(str)
+    bunker_f['Amount']=bunker_f['Amount'].astype(str)
+    bunker_s['Amount']=bunker_s['Amount'].str.replace(',', '')
+    bunker_f['Amount']=bunker_f['Amount'].str.replace(',', '')  
+    bunker_s['Amount']=bunker_s['Amount'].astype(float)
+    bunker_f['Amount']=bunker_f['Amount'].astype(float)
+    bunker_s['Date']=pd.to_datetime(bunker_s['Date'])
+    bunker_f['Date']=pd.to_datetime(bunker_f['Date'])
 
     return bunker_s, bunker_f
 
