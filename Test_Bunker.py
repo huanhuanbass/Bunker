@@ -103,7 +103,7 @@ wti_w=wti.groupby(pd.Grouper(key='Date',freq='W')).agg({'Open':'first','High':'m
 wti_m=wti.groupby(pd.Grouper(key='Date',freq='M')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
 
 cdtype=st.selectbox('Select Oil Type',options=['Brent','WTI'],key='cdtype')
-yr1=st.number_input('Input Start Year',min_value=2015,max_value=curryear,value=curryear-1,step=1,key='yr1')
+yr1=st.number_input('Input Start Year',min_value=2005,max_value=curryear,value=curryear-2,step=1,key='yr1')
 cdfreq=st.selectbox('Select Frequency',options=['Weekly','Daily','Monthly'],key='cdfreq')
 
 
