@@ -141,9 +141,9 @@ st.plotly_chart(candle)
 
 st.markdown('## **Major Rolling Contracts**')
 rolling_gap=st.selectbox('Select Rolling Month Gap (+n months)',options=[1,2],key='999')
-tonsl=st.multiselect('Select Product in Tonnes',options=['RDM35FO','RDM_0.5','SING_0.5','SIN_380','WTI in Tonnes','Brent in Tonnes'],default=['RDM35FO','RDM_0.5','SING_0.5','SIN_380'],key='sl111')
+tonsl=st.multiselect('Select Product in Tonnes',options=['RDM35FO','RDM_0.5','SING_0.5','SIN_380','WTI in Tonnes','Brent in Tonnes'],default=['RDM_0.5','SING_0.5'],key='sl111')
 barrelsl=st.multiselect('Select Product in Barrels',options=['WTI','Brent'],default=['Brent'],key='sl222')
-rangelist=st.selectbox('Select Range',options=['Year to Date','Last Year to Date','Month to Date','All'])
+rangelist=st.selectbox('Select Range',options=['Last Year to Date','Year to Date','Month to Date','All'])
 
 today = pd.to_datetime('today')
 if rangelist=='Last Year to Date':
@@ -261,7 +261,7 @@ st.write(p4tc_chgpct.style.format('{:,.2%}'))
 
 st.header(type+' Forward Contracts Line Chart')
 st.markdown('#### **----Fixed Contracts**')
-rangelist1=st.selectbox('Select Range',options=['Year to Date','Month to Date','Last Week to Date','All'],key='rg1')
+rangelist1=st.selectbox('Select Range',options=['Last Year to Date','Year to Date','Month to Date','Last Week to Date','All'],key='rg1')
 sllist1=st.multiselect('Select Contracts',options=sing5_pt1.columns,default=['Spot',m1,m2,m3,m4,m5,m6,m9,m12,m24],key='sl1')
 sing5_sl=sing5_pt1[sllist1]
 
@@ -272,6 +272,8 @@ elif rangelist1=='Month to Date':
     rangestart1=date(today.year,today.month,1)
 elif rangelist1=='Year to Date':
     rangestart1=date(today.year,1,1)
+elif rangelist1=='Last Year to Date':
+    rangestart1=date(today.year-1,1,1)
 else:
     rangestart1=date(2015,1,1)
 
@@ -283,7 +285,7 @@ st.plotly_chart(lplot)
 
 st.markdown('#### **----Rolling Contracts**')
 
-rangelist_r=st.selectbox('Select Range',options=['Year to Date','Month to Date','Last Week to Date','All'],key='101')
+rangelist_r=st.selectbox('Select Range',options=['Last Year to Date','Year to Date','Month to Date','Last Week to Date','All'],key='101')
 sllist_r=st.multiselect('Select Contracts (+n Months)',options=sing5_pt2.columns,default=[0,1,2,3,4,5,6,9,12,24],key='102')
 sing5_sl=sing5_pt2[sllist_r]
 
@@ -294,6 +296,8 @@ elif rangelist_r=='Month to Date':
     rangestart_r=date(today.year,today.month,1)
 elif rangelist_r=='Year to Date':
     rangestart_r=date(today.year,1,1)
+elif rangelist_r=='Last Year to Date':
+    rangestart_r=date(today.year-1,1,1)
 else:
     rangestart_r=date(2015,1,1)
 
@@ -335,7 +339,7 @@ st.plotly_chart(contractplot)
 
 st.markdown('#### **----Rolling Contracts**')
 
-rangelist_r=st.selectbox('Select Range',options=['Year to Date','Month to Date','Last Week to Date','All'],key='205')
+rangelist_r=st.selectbox('Select Range',options=['Last Year to Date','Year to Date','Month to Date','Last Week to Date','All'],key='205')
 contractlist_r=st.selectbox('Select Contracts (+n Months)',options=list(sing5_pt2.columns),key='201')
 bb_r=st.number_input('Bollinger Bands Window',value=20,key='202')
 ma1_r=st.number_input('Short Term Moving Average Window',value=20,key='203')
@@ -347,6 +351,8 @@ elif rangelist_r=='Month to Date':
     rangestart_r=date(today.year,today.month,1)
 elif rangelist_r=='Year to Date':
     rangestart_r=date(today.year,1,1)
+elif rangelist_r=='Last Year to Date':
+    rangestart_r=date(today.year-1,1,1)
 else:
     rangestart_r=date(2015,1,1)
 
