@@ -24,7 +24,7 @@ st.text('Dry Bulk Freight (Bunker) Interactive Dashboard')
 #Getting Bunker Data
 st.text('----Getting Bunker Data...')
 
-@st.cache_data(ttl=43200)
+@st.cache_data(ttl='24h')
 def load_bunker_data():
     bunker=pd.read_csv('Historical data - Bunker Prices.csv')
 
@@ -65,6 +65,10 @@ if 'bunker_f' not in st.session_state:
 
 
 st.text('Bunker Data Retrieved!...')
+
+st.button('Update Data',on_click=st.cache_data.clear)
+st.text('Data is automatically reloaded for potential updates every 24 hours.')
+st.text('If you would like to trigger the reload now, please click on the above "Update Data" button.')
 
 cutoff = pd.to_datetime('today')
 curryear=cutoff.year
