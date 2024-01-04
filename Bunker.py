@@ -66,9 +66,14 @@ if 'bunker_f' not in st.session_state:
 
 st.text('Bunker Data Retrieved!...')
 
-st.button('Update Data',on_click=st.cache_data.clear)
+
+def update_data():
+    for key in st.session_state.keys():
+        del st.session_state[key]
+    st.cache_data.clear()
+st.button('Update Data',on_click=update_data)
 st.text('Data is automatically reloaded for potential updates every 24 hours.')
-st.text('If you would like to trigger the reload now, please click on the above "Update Data" button.')
+st.text('If you would like to trigger the reload right now, please click on the above "Update Data" button.')
 
 cutoff = pd.to_datetime('today')
 curryear=cutoff.year
