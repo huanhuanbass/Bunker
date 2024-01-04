@@ -17,6 +17,10 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
+st.title('Bunker')
+st.text('Dry Bulk Freight (Bunker) Interactive Dashboard')
+
+
 #Getting Bunker Data
 st.text('----Getting Bunker Data...')
 
@@ -73,9 +77,6 @@ plot_title_font_size=25
 plot_legend_font_size=15
 plot_axis=dict(tickfont = dict(size=15))
 
-st.title('Bunker')
-st.text('Dry Bulk Freight (Bunker) Interactive Dashboard')
-st.write('Made by Huanyu')
 
 st.markdown('## **Candle Chart**')
 
