@@ -4,3 +4,4 @@ streamlit
 ta
 plotly
 openpyxl
+yfinance

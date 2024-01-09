@@ -17,6 +17,8 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
+import yfinance as yf
+
 st.title('Bunker')
 st.text('Dry Bulk Freight (Bunker) Interactive Dashboard')
 
@@ -91,10 +93,20 @@ st.markdown('## **Candle Chart**')
 
 bunker_s=st.session_state['bunker_s']
 bunker_f=st.session_state['bunker_f']
-wti=pd.read_csv('WTI原油期货历史数据.csv')
-brent=pd.read_csv('伦敦布伦特原油期货历史数据.csv')
-wti.rename(columns={'日期':'Date','收盘':'Close','开盘':'Open','高':'High','低':'Low','交易量':'Volume','涨跌幅':'DoD'},inplace=True)
-brent.rename(columns={'日期':'Date','收盘':'Close','开盘':'Open','高':'High','低':'Low','交易量':'Volume','涨跌幅':'DoD'},inplace=True)
+
+#wti=pd.read_csv('WTI原油期货历史数据.csv')
+#brent=pd.read_csv('伦敦布伦特原油期货历史数据.csv')
+#wti.rename(columns={'日期':'Date','收盘':'Close','开盘':'Open','高':'High','低':'Low','交易量':'Volume','涨跌幅':'DoD'},inplace=True)
+#brent.rename(columns={'日期':'Date','收盘':'Close','开盘':'Open','高':'High','低':'Low','交易量':'Volume','涨跌幅':'DoD'},inplace=True)
+
+wtiyf= yf.Ticker("CL=F")
+wti=wtiyf.history(period="20y")
+wti.reset_index(inplace=True)
+
+brentyf=yf.Ticker('BZ=F')
+brent=brentyf.history(period="20y")
+brent.reset_index(inplace=True)
+
 wti_pt=wti[['Date','Close']]
 wti_pt.set_index('Date',inplace=True)
 wti_pt.rename(columns={'Close':'WTI'},inplace=True)
@@ -168,6 +180,10 @@ else:
 
 bunker_major=bunker_f[bunker_f['Rolling Month Gap']==rolling_gap]
 bunker_major_pt=bunker_major.pivot_table(index='Date',columns='Route',values='Amount',aggfunc='mean')
+
+wti_pt.index=wti_pt.index.tz_localize(None)
+brent_pt.index=brent_pt.index.tz_localize(None)
+
 bunker_major_pt=pd.merge(bunker_major_pt,wti_pt,left_index=True,right_index=True,how='left')
 bunker_major_pt=pd.merge(bunker_major_pt,brent_pt,left_index=True,right_index=True,how='left')
 bunker_major_pt.sort_index(ascending=False,inplace=True)
