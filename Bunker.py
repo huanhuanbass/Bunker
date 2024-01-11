@@ -229,12 +229,12 @@ sing5_pt2.sort_index(inplace=True)
 sing5_pt2.columns=sing5_pt2.columns.astype('int64')
 
 
+sing5_s.drop_duplicates(inplace=True)
 sing5_s.set_index('Date',inplace=True)
 sing5_s.sort_index(ascending=True,inplace=True)
 sing5_s=sing5_s[['Amount']]
-
 sing5_s.rename(columns={'Amount':'Spot'},inplace=True)
-sing5_s.drop_duplicates(inplace=True)
+
 
 
 sing5_pt1=pd.merge(sing5_s,sing5_pt1,left_index=True,right_index=True,how='outer')
