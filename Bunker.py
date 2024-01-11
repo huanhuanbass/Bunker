@@ -281,8 +281,8 @@ st.markdown('#### **Change in Percentage**')
 sing5_.loc['DoD Chg %']=sing5_.loc['DoD Chg']/sing5_df.loc[lday.date()]
 sing5_.loc['WoW Chg %']=sing5_.loc['WoW Chg']/sing5_df.loc[lweek.date()]
 sing5_.loc['MoM Chg %']=sing5_.loc['MoM Chg']/sing5_df.loc[lmonth.date()]
-p4tc_chgpct=pd.concat([sing5_.loc[['DoD Chg %']],sing5_.loc[['WoW Chg %']],sing5_.loc[['MoM Chg %']]])
-st.write(p4tc_chgpct.style.format('{:,.2%}'))
+sing5_chgpct=pd.concat([sing5_.loc[['DoD Chg %']],sing5_.loc[['WoW Chg %']],sing5_.loc[['MoM Chg %']]])
+st.write(sing5_chgpct.style.format('{:,.2%}'))
 
 
 st.header(type+' Forward Contracts Line Chart')
