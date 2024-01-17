@@ -224,6 +224,17 @@ sing5_pt1=sing5_f.pivot_table(index='Date',columns='Fixed Contract',values='Amou
 sing5_pt1.index=pd.to_datetime(sing5_pt1.index,dayfirst=True)
 sing5_pt1.sort_index(inplace=True)
 
+tday=sing5_pt1.index.max()
+lday=tday-BDay(1)
+l2day=tday-BDay(2)
+l3day=tday-BDay(3)
+l4day=tday-BDay(4)
+lweek=tday-BDay(5)
+l2week=tday-BDay(10)
+l3week=tday-BDay(15)
+lmonth=tday-BDay(20)
+l2month=tday-BDay(45)
+
 sing5_pt2=sing5_f.pivot_table(index='Date',columns='Rolling Month Gap',values='Amount',aggfunc='mean')
 sing5_pt2.sort_index(inplace=True)
 sing5_pt2.columns=sing5_pt2.columns.astype('int64')
@@ -238,20 +249,16 @@ sing5_s.rename(columns={'Amount':'Spot'},inplace=True)
 
 
 sing5_pt1=pd.merge(sing5_s,sing5_pt1,left_index=True,right_index=True,how='outer')
+
+idx=pd.bdate_range(start='1/1/1998', end=tday)
+sing5_pt1=sing5_pt1.reindex(idx,method='ffill')
+
 sing5_pt2=pd.merge(sing5_s,sing5_pt2,left_index=True,right_index=True,how='outer')
+sing5_pt2=sing5_pt2.reindex(idx,method='ffill')
 sing5_pt2.rename(columns={'Spot':0},inplace=True)
 
 
-tday=sing5_pt1.index.max()
-lday=tday-BDay(1)
-l2day=tday-BDay(2)
-l3day=tday-BDay(3)
-l4day=tday-BDay(4)
-lweek=tday-BDay(5)
-l2week=tday-BDay(10)
-l3week=tday-BDay(15)
-lmonth=tday-BDay(20)
-l2month=tday-BDay(45)
+
 
 s0='Spot'
 
