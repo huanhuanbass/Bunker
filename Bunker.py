@@ -18,7 +18,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
 import yfinance as yf
-import request
+import requests
 
 st.title('Bunker')
 st.text('Dry Bulk Freight (Bunker) Interactive Dashboard')
