@@ -88,6 +88,7 @@ def load_bunker_stock_data():
         df=pd.DataFrame(r)
         dat=df.loc['data','response']
         data=pd.DataFrame(dat)
+	data['value']=data['value'].astype(float)
         pt=data.pivot_table(index='period',columns='series-description',values='value',aggfunc='mean')
         allstock=pd.merge(allstock,pt,left_index=True,right_index=True,how='outer')
 
@@ -133,6 +134,7 @@ def load_bunker_prod_data():
         df=pd.DataFrame(r)
         dat=df.loc['data','response']
         data=pd.DataFrame(dat)
+	data['value']=data['value'].astype(float)
         pt=data.pivot_table(index='period',columns='series-description',values='value',aggfunc='mean')
         allprod=pd.merge(allprod,pt,left_index=True,right_index=True,how='outer')
 
