@@ -67,96 +67,6 @@ if 'bunker_f' not in st.session_state:
     st.session_state['bunker_f']=bunker_f
 
 
-@st.cache_data(ttl='24h')
-def load_bunker_stock_data():
-    token='NoMDXKerhEjs8F2heKxEJRDUNtL8Fj3j9v1d26k9'
-    page1='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WCRSTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page2='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WRESTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page3='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=W_EPOOXE_SAE_NUS_MBBL&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page4='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=W_EPPA_SAE_NUS_MBBL&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page5='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WDISTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page6='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WGTSTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page7='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WKJSTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page8='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WPRSTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-
-    page=[page1,page2,page3,page4,page5,page6,page7,page8]
-
-    allstock=pd.DataFrame()
-    for pg in page:
-        url = pg+'&api_key='+token
-        r = requests.get(url,verify=False).json()
-        df=pd.DataFrame(r)
-        dat=df.loc['data','response']
-        data=pd.DataFrame(dat)
-        data['value']=data['value'].astype(float)
-        pt=data.pivot_table(index='period',columns='series-description',values='value',aggfunc='mean')
-        allstock=pd.merge(allstock,pt,left_index=True,right_index=True,how='outer')
-
-    allstock.index=pd.to_datetime(allstock.index)
-
-    allstock.rename(columns={'U.S. Ending Stocks of Crude Oil (Thousand Barrels)':'Crude Oil',
-                            'U.S. Ending Stocks of Total Gasoline (Thousand Barrels)':'Gasoline',
-                            'U.S. Ending Stocks of Kerosene-Type Jet Fuel (Thousand Barrels)':'Kerosene',
-                            'U.S. Ending Stocks of Distillate Fuel Oil (Thousand Barrels)':'Distillate Fuel Oil',
-                            'U.S. Ending Stocks of Residual Fuel Oil (Thousand Barrels)':'Residual Fuel Oil',
-                            'U.S. Propane and Propylene Ending Stocks Excluding Propylene at Terminal (Thousand Barrels)':'Propane and Propylene',
-                            'U.S. Ending Stocks of Asphalt and Road Oil (Thousand Barrels)':'Asphalt and Road Oil',
-                            'U.S. Ending Stocks of Fuel Ethanol (Thousand Barrels)':'Fuel Ethanol'},inplace=True)
-
-    return allstock
-
-allstock=load_bunker_stock_data()
-
-
-if 'bunker_stock' not in st.session_state:
-    st.session_state['bunker_stock']=allstock
-
-
-
-@st.cache_data(ttl='24h')
-def load_bunker_prod_data():
-    token='NoMDXKerhEjs8F2heKxEJRDUNtL8Fj3j9v1d26k9'
-
-    page9='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPT&facets[product][]=EPM0F&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page10='https://api.eia.gov/v2/petroleum/pnp/wprodrb/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPR&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPM0F&facets[product][]=EPPR&facets[series][]=WDIRPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page11='https://api.eia.gov/v2/petroleum/pnp/wprodrb/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPR&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPM0F&facets[product][]=EPPR&facets[series][]=WKJRPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page12='https://api.eia.gov/v2/petroleum/pnp/wprodrb/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPR&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPM0F&facets[product][]=EPPR&facets[series][]=WRERPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page13='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=FPF&facets[process][]=YOP&facets[process][]=YPR&facets[product][]=EPC0&facets[product][]=EPM0F&facets[product][]=EPOOXE&facets[series][]=W_EPOOXE_YOP_NUS_MBBLD&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page14='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=FPF&facets[process][]=YOP&facets[process][]=YPR&facets[product][]=EPC0&facets[product][]=EPM0F&facets[product][]=EPOOXE&facets[series][]=WCRFPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page15='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPA&facets[product][]=EPLLPZ&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-
-    page=[page9,page10,page11,page12,page13,page14,page15]
-
-    allprod=pd.DataFrame()
-    for pg in page:
-        url = pg+'&api_key='+token
-        r = requests.get(url,verify=False).json()
-        df=pd.DataFrame(r)
-        dat=df.loc['data','response']
-        data=pd.DataFrame(dat)
-        data['value']=data['value'].astype(float)
-        pt=data.pivot_table(index='period',columns='series-description',values='value',aggfunc='mean')
-        allprod=pd.merge(allprod,pt,left_index=True,right_index=True,how='outer')
-
-    allprod.index=pd.to_datetime(allprod.index)
-
-    allprod.rename(columns={'U.S. Field Production of Crude Oil (Thousand Barrels per Day)':'Crude Oil',
-                            'U.S. Refiner and Blender Adjusted Net Production of Finished Motor Gasoline (Thousand Barrels per Day)':'Gasoline',
-                            'U.S. Refiner and Blender Net Production of Kerosene-Type Jet Fuel (Thousand Barrels per Day)':'Kerosene',
-                            'U.S. Refiner and Blender Net Production of Distillate Fuel Oil (Thousand Barrels per Day)':'Distillate Fuel Oil',
-                            'U.S. Refiner and Blender Net Production of Residual Fuel Oil (Thousand Barrels per Day)':'Residual Fuel Oil',
-                            'U.S. Refiner, Blender, and Gas Plant Net Production of Propane and Propylene (Thousand Barrels per Day)':'Propane and Propylene',
-                            'U.S. Oxygenate Plant Production of Fuel Ethanol (Thousand Barrels per Day)':'Fuel Ethanol'},inplace=True)
-
-    return allprod
-
-allstock=load_bunker_prod_data()
-
-
-if 'bunker_prod' not in st.session_state:
-    st.session_state['bunker_prod']=allstock
-
-
 
 
 
@@ -315,33 +225,6 @@ st.markdown('## **SnD Data**')
 
 
 
-st.markdown('## **US Crude Oil and Oil Products Production**')
-
-bunker_prod=st.session_state['bunker_prod']
-allprod=bunker_prod.copy()
-
-yrpd=st.number_input('Input Start Year',min_value=2005,max_value=curryear,value=curryear-2,step=1,key='yrpd')
-sllistpd=st.multiselect('Select Products',options=allprod.columns,default=['Crude Oil'],key='slpd')
-allprod_chart=allprod[allprod.index.year>=yrpd]
-allprod_chart=allprod_chart[sllistpd]
-allprodplot=px.line(allprod_chart,width=1000,height=500,title='US Crude Oil and Oil Products Production')
-allprodplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_ticklen)
-allprodplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
-st.plotly_chart(allprodplot)
-
-st.markdown('## **US Crude Oil and Oil Products Stock**')
-
-bunker_stock=st.session_state['bunker_stock']
-allstock=bunker_stock.copy()
-
-yrstk=st.number_input('Input Start Year',min_value=2005,max_value=curryear,value=curryear-2,step=1,key='yrstk')
-slliststk=st.multiselect('Select Products',options=allstock.columns,default=['Crude Oil'],key='slstk')
-allstock_chart=allstock[allstock.index.year>=yrstk]
-allstock_chart=allstock_chart[slliststk]
-allstockplot=px.line(allstock_chart,width=1000,height=500,title='US Stock of Crude Oil and Oil Products')
-allstockplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_ticklen)
-allstockplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
-st.plotly_chart(allstockplot)
 
 
 
@@ -871,3 +754,120 @@ elif freq_r=='Quarterly':
     spotplot['data'][-1]['line']['color']='black'
     st.plotly_chart(spotplot)
 
+
+@st.cache_data(ttl='24h')
+def load_bunker_stock_data():
+    token='NoMDXKerhEjs8F2heKxEJRDUNtL8Fj3j9v1d26k9'
+    page1='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WCRSTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page2='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WRESTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page3='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=W_EPOOXE_SAE_NUS_MBBL&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page4='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=W_EPPA_SAE_NUS_MBBL&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page5='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WDISTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page6='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WGTSTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page7='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WKJSTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page8='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WPRSTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+
+    page=[page1,page2,page3,page4,page5,page6,page7,page8]
+
+    allstock=pd.DataFrame()
+    for pg in page:
+        url = pg+'&api_key='+token
+        r = requests.get(url,verify=False).json()
+        df=pd.DataFrame(r)
+        dat=df.loc['data','response']
+        data=pd.DataFrame(dat)
+        data['value']=data['value'].astype(float)
+        pt=data.pivot_table(index='period',columns='series-description',values='value',aggfunc='mean')
+        allstock=pd.merge(allstock,pt,left_index=True,right_index=True,how='outer')
+
+    allstock.index=pd.to_datetime(allstock.index)
+
+    allstock.rename(columns={'U.S. Ending Stocks of Crude Oil (Thousand Barrels)':'Crude Oil',
+                            'U.S. Ending Stocks of Total Gasoline (Thousand Barrels)':'Gasoline',
+                            'U.S. Ending Stocks of Kerosene-Type Jet Fuel (Thousand Barrels)':'Kerosene',
+                            'U.S. Ending Stocks of Distillate Fuel Oil (Thousand Barrels)':'Distillate Fuel Oil',
+                            'U.S. Ending Stocks of Residual Fuel Oil (Thousand Barrels)':'Residual Fuel Oil',
+                            'U.S. Propane and Propylene Ending Stocks Excluding Propylene at Terminal (Thousand Barrels)':'Propane and Propylene',
+                            'U.S. Ending Stocks of Asphalt and Road Oil (Thousand Barrels)':'Asphalt and Road Oil',
+                            'U.S. Ending Stocks of Fuel Ethanol (Thousand Barrels)':'Fuel Ethanol'},inplace=True)
+
+    return allstock
+
+allstock=load_bunker_stock_data()
+
+
+if 'bunker_stock' not in st.session_state:
+    st.session_state['bunker_stock']=allstock
+
+
+
+@st.cache_data(ttl='24h')
+def load_bunker_prod_data():
+    token='NoMDXKerhEjs8F2heKxEJRDUNtL8Fj3j9v1d26k9'
+
+    page9='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPT&facets[product][]=EPM0F&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page10='https://api.eia.gov/v2/petroleum/pnp/wprodrb/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPR&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPM0F&facets[product][]=EPPR&facets[series][]=WDIRPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page11='https://api.eia.gov/v2/petroleum/pnp/wprodrb/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPR&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPM0F&facets[product][]=EPPR&facets[series][]=WKJRPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page12='https://api.eia.gov/v2/petroleum/pnp/wprodrb/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPR&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPM0F&facets[product][]=EPPR&facets[series][]=WRERPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page13='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=FPF&facets[process][]=YOP&facets[process][]=YPR&facets[product][]=EPC0&facets[product][]=EPM0F&facets[product][]=EPOOXE&facets[series][]=W_EPOOXE_YOP_NUS_MBBLD&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page14='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=FPF&facets[process][]=YOP&facets[process][]=YPR&facets[product][]=EPC0&facets[product][]=EPM0F&facets[product][]=EPOOXE&facets[series][]=WCRFPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page15='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPA&facets[product][]=EPLLPZ&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+
+    page=[page9,page10,page11,page12,page13,page14,page15]
+
+    allprod=pd.DataFrame()
+    for pg in page:
+        url = pg+'&api_key='+token
+        r = requests.get(url,verify=False).json()
+        df=pd.DataFrame(r)
+        dat=df.loc['data','response']
+        data=pd.DataFrame(dat)
+        data['value']=data['value'].astype(float)
+        pt=data.pivot_table(index='period',columns='series-description',values='value',aggfunc='mean')
+        allprod=pd.merge(allprod,pt,left_index=True,right_index=True,how='outer')
+
+    allprod.index=pd.to_datetime(allprod.index)
+
+    allprod.rename(columns={'U.S. Field Production of Crude Oil (Thousand Barrels per Day)':'Crude Oil',
+                            'U.S. Refiner and Blender Adjusted Net Production of Finished Motor Gasoline (Thousand Barrels per Day)':'Gasoline',
+                            'U.S. Refiner and Blender Net Production of Kerosene-Type Jet Fuel (Thousand Barrels per Day)':'Kerosene',
+                            'U.S. Refiner and Blender Net Production of Distillate Fuel Oil (Thousand Barrels per Day)':'Distillate Fuel Oil',
+                            'U.S. Refiner and Blender Net Production of Residual Fuel Oil (Thousand Barrels per Day)':'Residual Fuel Oil',
+                            'U.S. Refiner, Blender, and Gas Plant Net Production of Propane and Propylene (Thousand Barrels per Day)':'Propane and Propylene',
+                            'U.S. Oxygenate Plant Production of Fuel Ethanol (Thousand Barrels per Day)':'Fuel Ethanol'},inplace=True)
+
+    return allprod
+
+allstock=load_bunker_prod_data()
+
+
+if 'bunker_prod' not in st.session_state:
+    st.session_state['bunker_prod']=allstock
+
+st.markdown('## **US Crude Oil and Oil Products Production**')
+
+bunker_prod=st.session_state['bunker_prod']
+allprod=bunker_prod.copy()
+
+yrpd=st.number_input('Input Start Year',min_value=2005,max_value=curryear,value=curryear-2,step=1,key='yrpd')
+sllistpd=st.multiselect('Select Products',options=allprod.columns,default=['Crude Oil'],key='slpd')
+allprod_chart=allprod[allprod.index.year>=yrpd]
+allprod_chart=allprod_chart[sllistpd]
+allprodplot=px.line(allprod_chart,width=1000,height=500,title='US Crude Oil and Oil Products Production')
+allprodplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_ticklen)
+allprodplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
+st.plotly_chart(allprodplot)
+
+st.markdown('## **US Crude Oil and Oil Products Stock**')
+
+bunker_stock=st.session_state['bunker_stock']
+allstock=bunker_stock.copy()
+
+yrstk=st.number_input('Input Start Year',min_value=2005,max_value=curryear,value=curryear-2,step=1,key='yrstk')
+slliststk=st.multiselect('Select Products',options=allstock.columns,default=['Crude Oil'],key='slstk')
+allstock_chart=allstock[allstock.index.year>=yrstk]
+allstock_chart=allstock_chart[slliststk]
+allstockplot=px.line(allstock_chart,width=1000,height=500,title='US Stock of Crude Oil and Oil Products')
+allstockplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_ticklen)
+allstockplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
+st.plotly_chart(allstockplot)
