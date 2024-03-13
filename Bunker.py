@@ -474,6 +474,7 @@ if freq=='Weekly':
     spotplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
     spotplot['data'][-1]['line']['width']=5
     spotplot['data'][-1]['line']['color']='black'
+    spotplot.update_layout(template=draft_template) 
     st.plotly_chart(spotplot)
 
 elif freq=='Monthly':
@@ -488,6 +489,7 @@ elif freq=='Monthly':
     spotplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
     spotplot['data'][-1]['line']['width']=5
     spotplot['data'][-1]['line']['color']='black'
+    spotplot.update_layout(template=draft_template) 
     st.plotly_chart(spotplot)
 
 elif freq=='Quarterly':
@@ -502,6 +504,7 @@ elif freq=='Quarterly':
     spotplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
     spotplot['data'][-1]['line']['width']=5
     spotplot['data'][-1]['line']['color']='black'
+    spotplot.update_layout(template=draft_template) 
     st.plotly_chart(spotplot)
 
 st.header(type+' Forward Curve')
