@@ -807,8 +807,11 @@ def load_bunker_stock_data():
     page6='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WGTSTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
     page7='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WKJSTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
     page8='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPLLPZ&facets[product][]=EPM0&facets[product][]=EPOOXE&facets[product][]=EPPA&facets[product][]=EPPR&facets[process][]=SAE&facets[process][]=SAXP&facets[series][]=WPRSTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page9='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[process][]=SAS&facets[series][]=WCSSTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page10='https://api.eia.gov/v2/petroleum/stoc/wstk/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[product][]=EPC0&facets[process][]=SAX&facets[series][]=WCESTUS1&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
 
-    page=[page1,page2,page3,page4,page5,page6,page7,page8]
+    page=[page1,page2,page3,page4,page5,page6,page7,page8,page9,page10]
+
 
     allstock=pd.DataFrame()
     for pg in page:
@@ -846,15 +849,15 @@ if 'bunker_stock' not in st.session_state:
 def load_bunker_prod_data():
     token='NoMDXKerhEjs8F2heKxEJRDUNtL8Fj3j9v1d26k9'
 
-    page9='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPT&facets[product][]=EPM0F&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page10='https://api.eia.gov/v2/petroleum/pnp/wprodrb/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPR&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPM0F&facets[product][]=EPPR&facets[series][]=WDIRPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page11='https://api.eia.gov/v2/petroleum/pnp/wprodrb/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPR&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPM0F&facets[product][]=EPPR&facets[series][]=WKJRPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page12='https://api.eia.gov/v2/petroleum/pnp/wprodrb/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPR&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPM0F&facets[product][]=EPPR&facets[series][]=WRERPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page13='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=FPF&facets[process][]=YOP&facets[process][]=YPR&facets[product][]=EPC0&facets[product][]=EPM0F&facets[product][]=EPOOXE&facets[series][]=W_EPOOXE_YOP_NUS_MBBLD&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page14='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=FPF&facets[process][]=YOP&facets[process][]=YPR&facets[product][]=EPC0&facets[product][]=EPM0F&facets[product][]=EPOOXE&facets[series][]=WCRFPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
-    page15='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPA&facets[product][]=EPLLPZ&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page11='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPT&facets[product][]=EPM0F&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page12='https://api.eia.gov/v2/petroleum/pnp/wprodrb/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPR&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPM0F&facets[product][]=EPPR&facets[series][]=WDIRPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page13='https://api.eia.gov/v2/petroleum/pnp/wprodrb/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPR&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPM0F&facets[product][]=EPPR&facets[series][]=WKJRPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page14='https://api.eia.gov/v2/petroleum/pnp/wprodrb/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPR&facets[product][]=EPD0&facets[product][]=EPJK&facets[product][]=EPM0F&facets[product][]=EPPR&facets[series][]=WRERPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page15='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=FPF&facets[process][]=YOP&facets[process][]=YPR&facets[product][]=EPC0&facets[product][]=EPM0F&facets[product][]=EPOOXE&facets[series][]=W_EPOOXE_YOP_NUS_MBBLD&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page16='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=FPF&facets[process][]=YOP&facets[process][]=YPR&facets[product][]=EPC0&facets[product][]=EPM0F&facets[product][]=EPOOXE&facets[series][]=WCRFPUS2&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
+    page17='https://api.eia.gov/v2/petroleum/sum/sndw/data/?frequency=weekly&data[0]=value&facets[duoarea][]=NUS&facets[process][]=YPA&facets[product][]=EPLLPZ&sort[0][column]=period&sort[0][direction]=desc&offset=0&length=5000'
 
-    page=[page9,page10,page11,page12,page13,page14,page15]
+    page=[page11,page12,page13,page14,page15,page16,page17]
 
     allprod=pd.DataFrame()
     for pg in page:
