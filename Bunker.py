@@ -833,7 +833,9 @@ def load_bunker_stock_data():
                             'U.S. Ending Stocks of Residual Fuel Oil (Thousand Barrels)':'Residual Fuel Oil',
                             'U.S. Propane and Propylene Ending Stocks Excluding Propylene at Terminal (Thousand Barrels)':'Propane and Propylene',
                             'U.S. Ending Stocks of Asphalt and Road Oil (Thousand Barrels)':'Asphalt and Road Oil',
-                            'U.S. Ending Stocks of Fuel Ethanol (Thousand Barrels)':'Fuel Ethanol'},inplace=True)
+                            'U.S. Ending Stocks of Fuel Ethanol (Thousand Barrels)':'Fuel Ethanol',
+                            'U.S. Ending Stocks of Crude Oil in SPR (Thousand Barrels)':'Crude Oil SPR',
+                            'U.S. Ending Stocks excluding SPR of Crude Oil (Thousand Barrels)':'Crude Oil excl SPR'},inplace=True)
 
     return allstock
 
@@ -909,7 +911,7 @@ bunker_stock=st.session_state['bunker_stock']
 allstock=bunker_stock.copy()
 
 yrstk=st.number_input('Input Start Year',min_value=2005,max_value=curryear,value=curryear-2,step=1,key='yrstk')
-slliststk=st.multiselect('Select Products',options=allstock.columns,default=['Crude Oil'],key='slstk')
+slliststk=st.multiselect('Select Products',options=allstock.columns,default=['Crude Oil','Crude Oil SPR','Crude Oil excl SPR'],key='slstk')
 allstock_chart=allstock[allstock.index.year>=yrstk]
 allstock_chart=allstock_chart[slliststk]
 allstockplot=px.line(allstock_chart,width=1000,height=500,title='US Stock of Crude Oil and Oil Products')
