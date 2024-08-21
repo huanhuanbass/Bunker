@@ -46,7 +46,7 @@ st.text('Dry Bulk Freight (Bunker) Interactive Dashboard')
 #Getting Bunker Data
 st.text('----Getting Bunker Data...')
 
-@st.cache_data(ttl='24h')
+
 def load_bunker_data():
     bunker=pd.read_csv('Historical data - Bunker Prices.csv')
 
