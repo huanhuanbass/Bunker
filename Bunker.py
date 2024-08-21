@@ -132,22 +132,22 @@ brent.rename(columns={'日期':'Date','收盘':'Close','开盘':'Open','高':'Hi
 #brent=brentyf.history(period="20y")
 #brent.reset_index(inplace=True)
 
-#wti_pt=wti[['Date','Close']]
-#wti_pt.set_index('Date',inplace=True)
-#wti_pt.rename(columns={'Close':'WTI'},inplace=True)
-#wti_pt.index=pd.to_datetime(wti_pt.index)
-#brent_pt=brent[['Date','Close']]
-#brent_pt.set_index('Date',inplace=True)
-#brent_pt.rename(columns={'Close':'Brent'},inplace=True)
-#brent_pt.index=pd.to_datetime(brent_pt.index)
+wti_pt=wti[['Date','Close']]
+wti_pt.set_index('Date',inplace=True)
+wti_pt.rename(columns={'Close':'WTI'},inplace=True)
+wti_pt.index=pd.to_datetime(wti_pt.index)
+brent_pt=brent[['Date','Close']]
+brent_pt.set_index('Date',inplace=True)
+brent_pt.rename(columns={'Close':'Brent'},inplace=True)
+brent_pt.index=pd.to_datetime(brent_pt.index)
 
 brent['Date']=pd.to_datetime(brent['Date'])
-#brent_w=brent.groupby(pd.Grouper(key='Date',freq='W')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
-#brent_m=brent.groupby(pd.Grouper(key='Date',freq='M')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
+brent_w=brent.groupby(pd.Grouper(key='Date',freq='W')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
+brent_m=brent.groupby(pd.Grouper(key='Date',freq='M')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
 
 wti['Date']=pd.to_datetime(wti['Date'])
-#wti_w=wti.groupby(pd.Grouper(key='Date',freq='W')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
-#wti_m=wti.groupby(pd.Grouper(key='Date',freq='M')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
+wti_w=wti.groupby(pd.Grouper(key='Date',freq='W')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
+wti_m=wti.groupby(pd.Grouper(key='Date',freq='M')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
 
 cdtype=st.selectbox('Select Oil Type',options=['Brent','WTI'],key='cdtype')
 yr1=st.number_input('Input Start Year',min_value=2005,max_value=curryear,value=curryear-1,step=1,key='yr1')
