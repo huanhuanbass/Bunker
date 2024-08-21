@@ -141,11 +141,11 @@ brent.rename(columns={'日期':'Date','收盘':'Close','开盘':'Open','高':'Hi
 #brent_pt.rename(columns={'Close':'Brent'},inplace=True)
 #brent_pt.index=pd.to_datetime(brent_pt.index)
 
-#brent['Date']=pd.to_datetime(brent['Date'])
+brent['Date']=pd.to_datetime(brent['Date'])
 #brent_w=brent.groupby(pd.Grouper(key='Date',freq='W')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
 #brent_m=brent.groupby(pd.Grouper(key='Date',freq='M')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
 
-#wti['Date']=pd.to_datetime(wti['Date'])
+wti['Date']=pd.to_datetime(wti['Date'])
 #wti_w=wti.groupby(pd.Grouper(key='Date',freq='W')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
 #wti_m=wti.groupby(pd.Grouper(key='Date',freq='M')).agg({'Open':'first','High':'max','Low':'min','Close':'last'}).reset_index()
 
