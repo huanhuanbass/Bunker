@@ -75,6 +75,54 @@ def load_bunker_data():
     bunker_s['Date']=pd.to_datetime(bunker_s['Date'])
     bunker_f['Date']=pd.to_datetime(bunker_f['Date'])
 
+    bf=pd.read_excel('Brent Future Cleaned.xlsx')
+    bf2024=pd.read_excel('BRENT 2024.xlsx',header=None)
+    bf2025=pd.read_excel('BRENT 2025.xlsx',header=None)
+    bf2024new=pd.DataFrame()
+    for m in range(1,13):
+        code=bf2024.iloc[0,m*4-3]
+        slice=bf2024.iloc[6:,m*4-4:m*4-1]
+        slice,slice.columns=slice[1:],slice.iloc[0]
+        slice.dropna(inplace=True)
+        slice['Contract Year']=2024
+        slice['Code']=code    
+        bf2024new=pd.concat([bf2024new,slice])
+
+    bf2025new=pd.DataFrame()
+    for m in range(1,13):
+        code=bf2025.iloc[0,m*4-3]
+        slice=bf2025.iloc[6:,m*4-4:m*4-1]
+        slice,slice.columns=slice[1:],slice.iloc[0]
+        slice.dropna(inplace=True)
+        slice['Contract Year']=2025
+        slice['Code']=code
+        bf2025new=pd.concat([bf2025new,slice])
+
+    bfnew=pd.concat([bf2024new,bf2025new])
+    bf=pd.concat([bf,bfnew])
+    bf['PX_LAST']=bf['PX_LAST'].astype(np.float64)
+
+    bf['Contract Month Code']=bf['Code'].str[2:3]
+    monthdict={'F':1,'G':2,'H':3,'J':4,'K':5,'M':6,'N':7,'Q':8,'U':9,'V':10,'X':11,'Z':12}
+    bf['Contract Month']=bf['Contract Month Code'].map(monthdict)
+    bf['Fixed Contract']=bf['Contract Year'].astype('str')+'_M'+bf['Contract Month'].astype('str')
+    bf['Archive Month']=pd.to_datetime(bf['Date']).dt.month
+    bf['Archive Year']=pd.to_datetime(bf['Date']).dt.year
+    bf['Rolling Month Gap']=(bf['Contract Year']-bf['Archive Year'])*12+(bf['Contract Month']-bf['Archive Month'])
+
+    bf['Market']='Bunker'
+    bf['Route']='Brent'
+    bf['Currency']='USD'
+    bf.rename(columns={'Contract Year':'Year','Contract Month':'Month','Code':'Period','PX_LAST':'Amount'},inplace=True)
+    bf=bf[['Market','Route','Period','Date','Amount','Currency','Month','Year','Fixed Contract','Archive Month','Archive Year','Rolling Month Gap']]
+
+    bft=bf.copy()
+    bft['Route']='Brent in Tonnes'
+    bft['Amount']=bft['Amount']/0.136
+
+    bunker_f=pd.concat([bunker_f,bf,bft])
+
+
     return bunker_s, bunker_f
 
 bunker_s=load_bunker_data()[0]
@@ -121,55 +169,10 @@ st.markdown('## **Crude Oil Price**')
 st.markdown('## **Candle Chart for Crude Oil Contracts**')
 
 bunker_ss=st.session_state['bunker_s']
-bunker_ff=st.session_state['bunker_f']
+bunker_f=st.session_state['bunker_f']
 
 
-bf=pd.read_excel('Brent Future Cleaned.xlsx')
-bf2024=pd.read_excel('BRENT 2024.xlsx',header=None)
-bf2025=pd.read_excel('BRENT 2025.xlsx',header=None)
-bf2024new=pd.DataFrame()
-for m in range(1,13):
-    code=bf2024.iloc[0,m*4-3]
-    slice=bf2024.iloc[6:,m*4-4:m*4-1]
-    slice,slice.columns=slice[1:],slice.iloc[0]
-    slice.dropna(inplace=True)
-    slice['Contract Year']=2024
-    slice['Code']=code    
-    bf2024new=pd.concat([bf2024new,slice])
 
-bf2025new=pd.DataFrame()
-for m in range(1,13):
-    code=bf2025.iloc[0,m*4-3]
-    slice=bf2025.iloc[6:,m*4-4:m*4-1]
-    slice,slice.columns=slice[1:],slice.iloc[0]
-    slice.dropna(inplace=True)
-    slice['Contract Year']=2025
-    slice['Code']=code
-    bf2025new=pd.concat([bf2025new,slice])
-
-bfnew=pd.concat([bf2024new,bf2025new])
-bf=pd.concat([bf,bfnew])
-bf['PX_LAST']=bf['PX_LAST'].astype(np.float64)
-
-bf['Contract Month Code']=bf['Code'].str[2:3]
-monthdict={'F':1,'G':2,'H':3,'J':4,'K':5,'M':6,'N':7,'Q':8,'U':9,'V':10,'X':11,'Z':12}
-bf['Contract Month']=bf['Contract Month Code'].map(monthdict)
-bf['Fixed Contract']=bf['Contract Year'].astype('str')+'_M'+bf['Contract Month'].astype('str')
-bf['Archive Month']=pd.to_datetime(bf['Date']).dt.month
-bf['Archive Year']=pd.to_datetime(bf['Date']).dt.year
-bf['Rolling Month Gap']=(bf['Contract Year']-bf['Archive Year'])*12+(bf['Contract Month']-bf['Archive Month'])
-
-bf['Market']='Bunker'
-bf['Route']='Brent'
-bf['Currency']='USD'
-bf.rename(columns={'Contract Year':'Year','Contract Month':'Month','Code':'Period','PX_LAST':'Amount'},inplace=True)
-bf=bf[['Market','Route','Period','Date','Amount','Currency','Month','Year','Fixed Contract','Archive Month','Archive Year','Rolling Month Gap']]
-
-bft=bf.copy()
-bft['Route']='Brent in Tonnes'
-bft['Amount']=bft['Amount']/0.136
-
-bunker_f=pd.concat([bunker_ff,bf,bft])
 
 
 wti=pd.read_csv('WTI原油期货历史数据.csv')
