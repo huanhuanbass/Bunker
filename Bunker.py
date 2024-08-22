@@ -261,7 +261,19 @@ st.plotly_chart(candle)
 
 st.markdown('## **Fuel Oil Spot Price**')
 
-platts=pd.read_excel('Fuel Oil PLatts Historical Data.xlsx',skiprows=[1,2,3,4,5,6],index_col=0)
+@st.cache_data(ttl='24h')
+def load_platts_data():
+    platts=pd.read_excel('Fuel Oil PLatts Historical Data.xlsx',skiprows=[1,2,3,4,5,6],index_col=0)
+
+    return platts
+
+platts_spot=load_platts_data()
+
+if 'platts_spot' not in st.session_state:
+    st.session_state['platts_spot']=platts_spot
+
+
+platts=st.session_state['platts_spot']
 
 
 plattsspotsl=st.multiselect('Select Product',options=platts.columns.values,default=['Singapore 0.5% Cargo','Singapore 3.5% Cargo','Rotterdam 0.5% Barge','Rotterdam 3.5% Barge'],key='platts1')
