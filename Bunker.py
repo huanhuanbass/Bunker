@@ -113,11 +113,64 @@ plot_title_font_size=25
 plot_legend_font_size=15
 plot_axis=dict(tickfont = dict(size=15))
 
+st.title('Bunker')
+st.text('Dry Bulk Freight (Bunker) Interactive Dashboard')
 
-st.markdown('## **Candle Chart**')
 
-bunker_s=st.session_state['bunker_s']
-bunker_f=st.session_state['bunker_f']
+st.markdown('## **Crude Oil Price**')
+st.markdown('## **Candle Chart for Crude Oil Contracts**')
+
+bunker_ss=st.session_state['bunker_s']
+bunker_ff=st.session_state['bunker_f']
+
+
+bf=pd.read_excel('Data/Brent Future Cleaned.xlsx')
+bf2024=pd.read_excel('Data/BRENT 2024.xlsx',header=None)
+bf2025=pd.read_excel('Data/BRENT 2025.xlsx',header=None)
+bf2024new=pd.DataFrame()
+for m in range(1,13):
+    code=bf2024.iloc[0,m*4-3]
+    slice=bf2024.iloc[6:,m*4-4:m*4-1]
+    slice,slice.columns=slice[1:],slice.iloc[0]
+    slice.dropna(inplace=True)
+    slice['Contract Year']=2024
+    slice['Code']=code    
+    bf2024new=pd.concat([bf2024new,slice])
+
+bf2025new=pd.DataFrame()
+for m in range(1,13):
+    code=bf2025.iloc[0,m*4-3]
+    slice=bf2025.iloc[6:,m*4-4:m*4-1]
+    slice,slice.columns=slice[1:],slice.iloc[0]
+    slice.dropna(inplace=True)
+    slice['Contract Year']=2025
+    slice['Code']=code
+    bf2025new=pd.concat([bf2025new,slice])
+
+bfnew=pd.concat([bf2024new,bf2025new])
+bf=pd.concat([bf,bfnew])
+bf['PX_LAST']=bf['PX_LAST'].astype(np.float64)
+
+bf['Contract Month Code']=bf['Code'].str[2:3]
+monthdict={'F':1,'G':2,'H':3,'J':4,'K':5,'M':6,'N':7,'Q':8,'U':9,'V':10,'X':11,'Z':12}
+bf['Contract Month']=bf['Contract Month Code'].map(monthdict)
+bf['Fixed Contract']=bf['Contract Year'].astype('str')+'_M'+bf['Contract Month'].astype('str')
+bf['Archive Month']=pd.to_datetime(bf['Date']).dt.month
+bf['Archive Year']=pd.to_datetime(bf['Date']).dt.year
+bf['Rolling Month Gap']=(bf['Contract Year']-bf['Archive Year'])*12+(bf['Contract Month']-bf['Archive Month'])
+
+bf['Market']='Bunker'
+bf['Route']='Brent'
+bf['Currency']='USD'
+bf.rename(columns={'Contract Year':'Year','Contract Month':'Month','Code':'Period','PX_LAST':'Amount'},inplace=True)
+bf=bf[['Market','Route','Period','Date','Amount','Currency','Month','Year','Fixed Contract','Archive Month','Archive Year','Rolling Month Gap']]
+
+bft=bf.copy()
+bft['Route']='Brent in Tonnes'
+bft['Amount']=bft['Amount']/0.136
+
+bunker_f=pd.concat([bunker_ff,bf,bft])
+
 
 wti=pd.read_csv('WTI原油期货历史数据.csv')
 brent=pd.read_csv('伦敦布伦特原油期货历史数据.csv')
@@ -131,6 +184,9 @@ brent.rename(columns={'日期':'Date','收盘':'Close','开盘':'Open','高':'Hi
 #brentyf=yf.Ticker('BZ=F')
 #brent=brentyf.history(period="20y")
 #brent.reset_index(inplace=True)
+
+
+
 
 wti_pt=wti[['Date','Close']]
 wti_pt.set_index('Date',inplace=True)
@@ -186,8 +242,48 @@ candle.update_layout(template=draft_template)
 st.plotly_chart(candle)
 
 
+st.markdown('## **Fuel Oil Spot Price**')
 
-st.markdown('## **Major Rolling Contracts**')
+platts=pd.read_excel('Data/Fuel Oil PLatts Historical Data.xlsx',skiprows=[1,2,3,4,5,6],index_col=0)
+
+
+plattsspotsl=st.multiselect('Select Product',options=platts.columns.values,default=['Singapore 0.5% Cargo','Singapore 3.5% Cargo','Rotterdam 0.5% Barge','Rotterdam 3.5% Barge'],key='platts1')
+rangeplatts=st.selectbox('Select Range',options=['Last Year to Date','Year to Date','Month to Date','All'],key='platts')
+
+today = pd.to_datetime('today')
+if rangeplatts=='Last Year to Date':
+    rangestart=date(today.year-1,1,1)
+elif rangeplatts=='Month to Date':
+    rangestart=date(today.year,today.month,1)
+elif rangeplatts=='Year to Date':
+    rangestart=date(today.year,1,1)
+else:
+    rangestart=date(2015,1,1)
+
+plattssl=platts[platts.index>=pd.to_datetime(rangestart)]
+plattssls=plattssl[plattsspotsl]
+
+plattsplot=px.line(plattssls,width=1000,height=500,title='Fuel Oil Spot Price')
+plattsplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_ticklen)
+plattsplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
+plattsplot.update_layout(template=draft_template)
+st.plotly_chart(plattsplot)
+
+st.markdown('#### **----Spot Spread**')
+spct1=st.selectbox('Select Product 1',options=platts.columns.values,key='spct1')
+spctlist=list(platts.columns)
+spctlist.remove(spct1)
+spct2=st.selectbox('Select Product 2',options=spctlist,key='spct2')
+
+plattssl['Spread']=platts[spct1]-platts[spct2]
+sspplot=px.line(plattssl['Spread'],width=1000,height=500,title=spct1+' Minus '+spct2 +' Spread')
+sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_ticklen)
+sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
+sspplot.update_layout(template=draft_template)
+st.plotly_chart(sspplot)
+
+
+st.markdown('## **Rolling Contract Spread Between Crude Oil and Fuel Oil**')
 rolling_gap=st.selectbox('Select Rolling Month Gap (+n months)',options=[1,2],key='999')
 tonsl=st.multiselect('Select Product in Tonnes',options=['RDM35FO','RDM_0.5','SING_0.5','SIN_380','WTI in Tonnes','Brent in Tonnes'],default=['RDM_0.5','SING_0.5'],key='sl111')
 barrelsl=st.multiselect('Select Product in Barrels',options=['WTI','Brent'],default=['Brent'],key='sl222')
@@ -206,9 +302,10 @@ else:
 
 bunker_major=bunker_f[bunker_f['Rolling Month Gap']==rolling_gap]
 bunker_major_pt=bunker_major.pivot_table(index='Date',columns='Route',values='Amount',aggfunc='mean')
-
+bunker_major_pt=bunker_major_pt[['RDM35FO','RDM_0.5','SING_0.5','SIN_380']]
 wti_pt.index=wti_pt.index.tz_localize(None)
 brent_pt.index=brent_pt.index.tz_localize(None)
+
 
 bunker_major_pt=pd.merge(bunker_major_pt,wti_pt,left_index=True,right_index=True,how='left')
 bunker_major_pt=pd.merge(bunker_major_pt,brent_pt,left_index=True,right_index=True,how='left')
@@ -242,20 +339,22 @@ st.plotly_chart(mspplot)
 
 
 
-st.markdown('## **SnD Data**')
+
+bunker_s=platts[['Singapore 0.5% Cargo','Singapore 3.5% Cargo','Rotterdam 0.5% Barge','Rotterdam 3.5% Barge']]
+bunker_s.rename(columns={'Singapore 0.5% Cargo':'SING_0.5','Singapore 3.5% Cargo':'SIN_380','Rotterdam 0.5% Barge':'RDM_0.5','Rotterdam 3.5% Barge':'RDM35FO'},inplace=True)
+bunker_s.reset_index(inplace=True)
+bunker_s=pd.melt(bunker_s,id_vars=['index'],value_vars=['SING_0.5','SIN_380','RDM_0.5','RDM35FO'])
+bunker_s.rename(columns={'index':'Date','variable':'Route','value':'Amount'},inplace=True)
+bunker_s['Market']='Bunker'
+bunker_s['Period']='SPOT'
+bunker_s['Currency']='USD'
 
 
 
+st.markdown('## **Crude Oil and Fuel Oil Price**')
 
+type=st.selectbox('Select Type',options=['SING_0.5','SIN_380','RDM_0.5','RDM35FO','Brent','Brent in Tonnes'],key='000')
 
-
-
-
-
-
-st.markdown('## **Fuel Oil Price**')
-
-type=st.selectbox('Select Type',options=['SING_0.5','SIN_380','RDM_0.5','RDM35FO'],key='000')
 
 sing5_f=bunker_f[bunker_f['Route']==type]
 sing5_s=bunker_s[bunker_s['Route']==type]
@@ -276,28 +375,29 @@ l3week=tday-BDay(15)
 lmonth=tday-BDay(20)
 l2month=tday-BDay(45)
 
+
 sing5_pt2=sing5_f.pivot_table(index='Date',columns='Rolling Month Gap',values='Amount',aggfunc='mean')
 sing5_pt2.sort_index(inplace=True)
 sing5_pt2.columns=sing5_pt2.columns.astype('int64')
-
 
 sing5_s.drop_duplicates(inplace=True)
 sing5_s.set_index('Date',inplace=True)
 sing5_s.sort_index(ascending=True,inplace=True)
 sing5_s=sing5_s[['Amount']]
-sing5_s.rename(columns={'Amount':'Spot'},inplace=True)
 
+sing5_s.rename(columns={'Amount':'Spot'},inplace=True)
 
 
 sing5_pt1=pd.merge(sing5_s,sing5_pt1,left_index=True,right_index=True,how='outer')
 
+
 idx=pd.bdate_range(start='1/1/1998', end=tday)
 sing5_pt1=sing5_pt1.reindex(idx,method='ffill')
+
 
 sing5_pt2=pd.merge(sing5_s,sing5_pt2,left_index=True,right_index=True,how='outer')
 sing5_pt2=sing5_pt2.reindex(idx,method='ffill')
 sing5_pt2.rename(columns={'Spot':0},inplace=True)
-
 
 
 
@@ -307,9 +407,8 @@ for k in range(30):
     exec(f'm{k}=str((tday + relativedelta.relativedelta(months=k)).year)+\'_M\'+str((tday + relativedelta.relativedelta(months=k)).month)')
 
 
-
 st.header(type+' Summary')
-sing5_df=sing5_pt1[['Spot',m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12,m15,m18,m21,m24]]
+sing5_df=sing5_pt1[['Spot',m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12]]
 
 sing5_df.index=sing5_df.index.date
 
@@ -333,10 +432,11 @@ sing5_chgpct=pd.concat([sing5_.loc[['DoD Chg %']],sing5_.loc[['WoW Chg %']],sing
 st.write(sing5_chgpct.style.format('{:,.2%}'))
 
 
+
 st.header(type+' Forward Contracts Line Chart')
 st.markdown('#### **----Fixed Contracts**')
 rangelist1=st.selectbox('Select Range',options=['Last Year to Date','Year to Date','Month to Date','Last Week to Date','All'],key='rg1')
-sllist1=st.multiselect('Select Contracts',options=sing5_pt1.columns,default=['Spot',m1,m2,m3,m4,m5,m6,m9,m12,m24],key='sl1')
+sllist1=st.multiselect('Select Contracts',options=sing5_pt1.columns,default=[m1,m2,m3,m4,m5,m6,m9,m12],key='sl1')
 sing5_sl=sing5_pt1[sllist1]
 
 today = pd.to_datetime('today')
@@ -360,8 +460,9 @@ st.plotly_chart(lplot)
 
 st.markdown('#### **----Rolling Contracts**')
 
+
 rangelist_r=st.selectbox('Select Range',options=['Last Year to Date','Year to Date','Month to Date','Last Week to Date','All'],key='101')
-sllist_r=st.multiselect('Select Contracts (+n Months)',options=sing5_pt2.columns,default=[0,1,2,3,4,5,6,9,12,24],key='102')
+sllist_r=st.multiselect('Select Contracts (+n Months)',options=sing5_pt2.columns,default=[2,3,4,5,6,9,12],key='102')
 sing5_sl=sing5_pt2[sllist_r]
 
 today = pd.to_datetime('today')
@@ -387,7 +488,7 @@ st.plotly_chart(lplot)
 st.header(type+' Technical Analysis')
 st.markdown('#### **----Fixed Contracts**')
 
-contractlist=st.selectbox('Select Spot or Forward Contract',options=list(sing5_pt1.columns))
+contractlist=st.selectbox('Select Spot or Forward Contract',options=[m2]+list(sing5_pt1.columns))
 bb=st.number_input('Bollinger Bands Window',value=20)
 ma1=st.number_input('Short Term Moving Average Window',value=20)
 ma2=st.number_input('Long Term Moving Average Window',value=50)
@@ -417,7 +518,7 @@ st.plotly_chart(contractplot)
 st.markdown('#### **----Rolling Contracts**')
 
 rangelist_r=st.selectbox('Select Range',options=['Last Year to Date','Year to Date','Month to Date','Last Week to Date','All'],key='205')
-contractlist_r=st.selectbox('Select Contracts (+n Months)',options=list(sing5_pt2.columns),key='201')
+contractlist_r=st.selectbox('Select Contracts (+n Months)',options=[2]+list(sing5_pt2.columns),key='201')
 bb_r=st.number_input('Bollinger Bands Window',value=20,key='202')
 ma1_r=st.number_input('Short Term Moving Average Window',value=20,key='203')
 ma2_r=st.number_input('Long Term Moving Average Window',value=50,key='204')
@@ -455,7 +556,7 @@ contractplot.update_layout(template=draft_template)
 st.plotly_chart(contractplot)
 
 st.header(type+' Spot and Rolling FFA Contracts Seasonality')
-contractlist_r=st.selectbox('Select Contracts (+n Months)',options=list(sing5_pt2.columns),key='211')
+contractlist_r=st.selectbox('Select Contracts (+n Months)',options=[2]+list(sing5_pt2.columns),key='211')
 freq=st.radio('Select Frequency',options=['Weekly','Monthly','Quarterly'],key='spotfreq')
 sing5_sp=sing5_pt2[[contractlist_r]]
 sing5_sp.index=pd.to_datetime(sing5_sp.index)
@@ -475,7 +576,7 @@ if freq=='Weekly':
     spotplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
     spotplot['data'][-1]['line']['width']=5
     spotplot['data'][-1]['line']['color']='black'
-    spotplot.update_layout(template=draft_template) 
+    spotplot.update_layout(template=draft_template)
     st.plotly_chart(spotplot)
 
 elif freq=='Monthly':
@@ -490,7 +591,7 @@ elif freq=='Monthly':
     spotplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
     spotplot['data'][-1]['line']['width']=5
     spotplot['data'][-1]['line']['color']='black'
-    spotplot.update_layout(template=draft_template) 
+    spotplot.update_layout(template=draft_template)
     st.plotly_chart(spotplot)
 
 elif freq=='Quarterly':
@@ -505,11 +606,11 @@ elif freq=='Quarterly':
     spotplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
     spotplot['data'][-1]['line']['width']=5
     spotplot['data'][-1]['line']['color']='black'
-    spotplot.update_layout(template=draft_template) 
+    spotplot.update_layout(template=draft_template)
     st.plotly_chart(spotplot)
 
 st.header(type+' Forward Curve')
-sllist2=st.multiselect('Select Contracts',options=sing5_pt1.columns,default=['Spot',m1,m2,m3,m4,m5,m6,m9,m12,m24],key='2')
+sllist2=st.multiselect('Select Contracts',options=sing5_pt1.columns,default=['Spot',m1,m2,m3,m4,m5,m6,m9,m12],key='2')
 sing5_fc=sing5_pt1[sllist2]
 sing5_fct=sing5_fc.transpose()
 
@@ -536,8 +637,8 @@ st.plotly_chart(fctplot)
 
 st.header(type+' Time Spread')
 st.markdown('#### **----Fixed Contracts**')
-tsp1=st.selectbox('Select Contract 1',options=[m1]+list(sing5_pt1.columns))
-tsp2=st.selectbox('Select Contract 2',options=[m2]+list(sing5_pt1.columns))
+tsp1=st.selectbox('Select Contract 1',options=[m2]+list(sing5_pt1.columns))
+tsp2=st.selectbox('Select Contract 2',options=[m3]+list(sing5_pt1.columns))
 
 if tsp1!=tsp2:
     sing5_tsp=sing5_pt1[[tsp1,tsp2]]
@@ -546,12 +647,12 @@ if tsp1!=tsp2:
     tspplot=px.line(sing5_tsp[['Spread']],width=1000,height=500,title=type+' Fixed Contract Time Spread: '+str(tsp1)+' minus '+str(tsp2))
     tspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_ticklen)
     tspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
-    tspplot.update_layout(template=draft_template)    
-st.plotly_chart(tspplot)
+    tspplot.update_layout(template=draft_template)
+    st.plotly_chart(tspplot)
 
 st.markdown('#### **----Rolling Contracts**')
-tsp1_r=st.selectbox('Select Contracts (+n Months)',options=[1]+list(sing5_pt2.columns))
-tsp2_r=st.selectbox('Select Contracts (+n Months)',options=[2]+list(sing5_pt2.columns))
+tsp1_r=st.selectbox('Select Contracts (+n Months)',options=[2]+list(sing5_pt2.columns))
+tsp2_r=st.selectbox('Select Contracts (+n Months)',options=[3]+list(sing5_pt2.columns))
 
 if tsp1_r!=tsp2_r:
     sing5_tsp=sing5_pt2[[tsp1_r,tsp2_r]]
@@ -560,8 +661,8 @@ if tsp1_r!=tsp2_r:
     tspplot=px.line(sing5_tsp[['Spread']],width=1000,height=500,title=type+' Rolling Contract Time Spread: +'+str(tsp1_r)+'M minus +'+str(tsp2_r)+'M')
     tspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_ticklen)
     tspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
-    tspplot.update_layout(template=draft_template)    
-st.plotly_chart(tspplot)
+    tspplot.update_layout(template=draft_template)
+    st.plotly_chart(tspplot)
 
 
 freq_r=st.radio('Select Frequency',options=['Weekly','Monthly','Quarterly'],key='freq_r')
@@ -795,6 +896,25 @@ elif freq_r=='Quarterly':
     spotplot['data'][-1]['line']['color']='black'
     spotplot.update_layout(template=draft_template)
     st.plotly_chart(spotplot)
+
+
+
+
+
+
+
+
+st.markdown('## **SnD Data**')
+
+
+
+
+
+
+
+
+
+
 
 
 @st.cache_data(ttl='24h')
