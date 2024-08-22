@@ -124,9 +124,9 @@ bunker_ss=st.session_state['bunker_s']
 bunker_ff=st.session_state['bunker_f']
 
 
-bf=pd.read_excel('Data/Brent Future Cleaned.xlsx')
-bf2024=pd.read_excel('Data/BRENT 2024.xlsx',header=None)
-bf2025=pd.read_excel('Data/BRENT 2025.xlsx',header=None)
+bf=pd.read_excel('Brent Future Cleaned.xlsx')
+bf2024=pd.read_excel('BRENT 2024.xlsx',header=None)
+bf2025=pd.read_excel('BRENT 2025.xlsx',header=None)
 bf2024new=pd.DataFrame()
 for m in range(1,13):
     code=bf2024.iloc[0,m*4-3]
