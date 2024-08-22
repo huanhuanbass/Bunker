@@ -131,8 +131,8 @@ bunker_f=load_bunker_data()[1]
 if 'bunker_s' not in st.session_state:
     st.session_state['bunker_s']=bunker_s
 
-if 'bunker_f' not in st.session_state:
-    st.session_state['bunker_f']=bunker_f
+if 'bunker_ff' not in st.session_state:
+    st.session_state['bunker_ff']=bunker_f
 
 
 
@@ -169,26 +169,40 @@ st.markdown('## **Crude Oil Price**')
 st.markdown('## **Candle Chart for Crude Oil Contracts**')
 
 bunker_ss=st.session_state['bunker_s']
-bunker_f=st.session_state['bunker_f']
+bunker_f=st.session_state['bunker_ff']
 
 
 
+@st.cache_data(ttl='24h')
+def load_crude_data():
+
+    wti=pd.read_csv('WTI原油期货历史数据.csv')
+    brent=pd.read_csv('伦敦布伦特原油期货历史数据.csv')
+    wti.rename(columns={'日期':'Date','收盘':'Close','开盘':'Open','高':'High','低':'Low','交易量':'Volume','涨跌幅':'DoD'},inplace=True)
+    brent.rename(columns={'日期':'Date','收盘':'Close','开盘':'Open','高':'High','低':'Low','交易量':'Volume','涨跌幅':'DoD'},inplace=True)
+
+    #wtiyf= yf.Ticker("CL=F")
+    #wti=wtiyf.history(period="20y")
+    #wti.reset_index(inplace=True)
+
+    #brentyf=yf.Ticker('BZ=F')
+    #brent=brentyf.history(period="20y")
+    #brent.reset_index(inplace=True)
+
+    return brent, wti
+
+brent=load_crude_data()[0]
+wti=load_crude_data()[1]
+
+if 'crude_brent' not in st.session_state:
+    st.session_state['crude_brent']=brent
+
+if 'crude_wti' not in st.session_state:
+    st.session_state['crude_wti']=wti
 
 
-wti=pd.read_csv('WTI原油期货历史数据.csv')
-brent=pd.read_csv('伦敦布伦特原油期货历史数据.csv')
-wti.rename(columns={'日期':'Date','收盘':'Close','开盘':'Open','高':'High','低':'Low','交易量':'Volume','涨跌幅':'DoD'},inplace=True)
-brent.rename(columns={'日期':'Date','收盘':'Close','开盘':'Open','高':'High','低':'Low','交易量':'Volume','涨跌幅':'DoD'},inplace=True)
-
-#wtiyf= yf.Ticker("CL=F")
-#wti=wtiyf.history(period="20y")
-#wti.reset_index(inplace=True)
-
-#brentyf=yf.Ticker('BZ=F')
-#brent=brentyf.history(period="20y")
-#brent.reset_index(inplace=True)
-
-
+brent=st.session_state['crude_brent']
+wti=st.session_state['crude_wti']
 
 
 wti_pt=wti[['Date','Close']]
