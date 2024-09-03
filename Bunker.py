@@ -313,7 +313,7 @@ st.plotly_chart(sspplot)
 
 
 st.markdown('## **Rolling Contract Spread Between Crude Oil and Fuel Oil**')
-rolling_gap=st.selectbox('Select Rolling Month Gap (+n months)',options=[1,2],key='999')
+rolling_gap=st.selectbox('Select Rolling Month Gap (+n months)',options=[2,1],key='999')
 tonsl=st.multiselect('Select Product in Tonnes',options=['RDM35FO','RDM_0.5','SING_0.5','SIN_380','WTI in Tonnes','Brent in Tonnes'],default=['RDM_0.5','SING_0.5'],key='sl111')
 barrelsl=st.multiselect('Select Product in Barrels',options=['WTI','Brent'],default=['Brent'],key='sl222')
 rangelist=st.selectbox('Select Range',options=['Last Year to Date','Year to Date','Month to Date','All'])
