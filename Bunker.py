@@ -680,8 +680,8 @@ if tsp1!=tsp2:
     st.plotly_chart(tspplot)
 
 st.markdown('#### **----Rolling Contracts**')
-tsp1_r=st.selectbox('Select Contracts (+n Months)',options=[2]+list(sing5_pt2.columns))
-tsp2_r=st.selectbox('Select Contracts (+n Months)',options=[3]+list(sing5_pt2.columns))
+tsp1_r=st.selectbox('Select Contracts (+n Months)',options=[0]+list(sing5_pt2.columns))
+tsp2_r=st.selectbox('Select Contracts (+n Months)',options=[2]+list(sing5_pt2.columns))
 
 if tsp1_r!=tsp2_r:
     sing5_tsp=sing5_pt2[[tsp1_r,tsp2_r]]
