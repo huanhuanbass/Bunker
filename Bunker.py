@@ -38,6 +38,21 @@ draft_template.layout.annotations = [
     )
 ]
 
+draft_template_half = go.layout.Template()
+draft_template_half.layout.annotations = [
+    dict(
+        name="draft watermark",
+        text="COFCO Internal Use Only",
+        textangle=0,
+        opacity=0.1,
+        font=dict(color="black", size=30),
+        xref="paper",
+        yref="paper",
+        x=0.5,
+        y=0.5,
+        showarrow=False,
+    )
+]
 
 st.title('Bunker')
 st.text('Dry Bulk Freight (Bunker) Interactive Dashboard')
@@ -160,6 +175,7 @@ plot_title_font_color='dodgerblue'
 plot_title_font_size=25
 plot_legend_font_size=15
 plot_axis=dict(tickfont = dict(size=15))
+plot_axis_half=dict(tickfont = dict(size=10))
 
 st.title('Bunker')
 st.text('Dry Bulk Freight (Bunker) Interactive Dashboard')
@@ -276,7 +292,7 @@ if 'platts_spot' not in st.session_state:
 platts=st.session_state['platts_spot']
 
 
-plattsspotsl=st.multiselect('Select Product',options=platts.columns.values,default=['Singapore 0.5% Cargo','Singapore 3.5% Cargo','Rotterdam 0.5% Barge','Rotterdam 3.5% Barge'],key='platts1')
+plattsspotsl=st.multiselect('Select Product',options=platts.columns.values,default=['Singapore 0.5% Delivered','Rotterdam 0.5% Delivered','Zhoushan 0.5% Delivered','Hong Kong 0.5% Delivered','Fujairah 0.5% Delivered'],key='platts1')
 rangeplatts=st.selectbox('Select Range',options=['Last Year to Date','Year to Date','Month to Date','All'],key='platts')
 
 today = pd.to_datetime('today')
@@ -310,6 +326,95 @@ sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_t
 sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
 sspplot.update_layout(template=draft_template)
 st.plotly_chart(sspplot)
+
+st.write('For Presentations')
+col1, col2 = st.columns(2)
+
+with col1:
+    spct1='Singapore 0.5% Delivered'
+    spct2='Singapore 0.5% Cargo'
+    plattssl['Spread']=platts[spct1]-platts[spct2]
+    sspplot=px.line(plattssl['Spread'],width=500,height=300,title=spct1+' Minus '+spct2 +' Spread')
+    sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5
+    sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    sspplot.update_layout(template=draft_template_half)
+    sspplot.update_layout(yaxis_title=None)
+    sspplot.update_layout(xaxis_title=None)
+    sspplot.update_layout(legend_title=None)
+    st.plotly_chart(sspplot)
+
+    spct1='Singapore 3.5% Delivered'
+    spct2='Singapore 3.5% Cargo'
+    plattssl['Spread']=platts[spct1]-platts[spct2]
+    sspplot=px.line(plattssl['Spread'],width=500,height=300,title=spct1+' Minus '+spct2 +' Spread')
+    sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    sspplot.update_layout(template=draft_template_half)
+    sspplot.update_layout(yaxis_title=None)
+    sspplot.update_layout(xaxis_title=None)
+    sspplot.update_layout(legend_title=None)
+    st.plotly_chart(sspplot)
+
+    spct1='Rotterdam 0.5% Delivered'
+    spct2='Rotterdam 0.5% Barge'
+    plattssl['Spread']=platts[spct1]-platts[spct2]
+    sspplot=px.line(plattssl['Spread'],width=500,height=300,title=spct1+' Minus '+spct2 +' Spread')
+    sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    sspplot.update_layout(template=draft_template_half)
+    sspplot.update_layout(yaxis_title=None)
+    sspplot.update_layout(xaxis_title=None)
+    sspplot.update_layout(legend_title=None)
+    st.plotly_chart(sspplot)
+
+    spct1='Rotterdam 3.5% Delivered'
+    spct2='Rotterdam 3.5% Barge'
+    plattssl['Spread']=platts[spct1]-platts[spct2]
+    sspplot=px.line(plattssl['Spread'],width=500,height=300,title=spct1+' Minus '+spct2 +' Spread')
+    sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    sspplot.update_layout(template=draft_template_half)
+    sspplot.update_layout(yaxis_title=None)
+    sspplot.update_layout(xaxis_title=None)
+    sspplot.update_layout(legend_title=None)
+    st.plotly_chart(sspplot)
+
+with col2:
+    spct1='Singapore 0.5% Delivered'
+    spct2='Rotterdam 0.5% Delivered'
+    plattssl['Spread']=platts[spct1]-platts[spct2]
+    sspplot=px.line(plattssl['Spread'],width=500,height=300,title=spct1+' Minus '+spct2 +' Spread')
+    sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    sspplot.update_layout(template=draft_template_half)
+    sspplot.update_layout(yaxis_title=None)
+    sspplot.update_layout(xaxis_title=None)
+    sspplot.update_layout(legend_title=None)
+    st.plotly_chart(sspplot)
+
+    spct1='Singapore 0.5% Delivered'
+    spct2='Singapore 3.5% Delivered'
+    plattssl['Spread']=platts[spct1]-platts[spct2]
+    sspplot=px.line(plattssl['Spread'],width=500,height=300,title=spct1+' Minus '+spct2 +' Spread')
+    sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    sspplot.update_layout(template=draft_template_half)
+    sspplot.update_layout(yaxis_title=None)
+    sspplot.update_layout(xaxis_title=None)
+    sspplot.update_layout(legend_title=None)
+    st.plotly_chart(sspplot)
+
+    spct1='Rotterdam 0.5% Delivered'
+    spct2='Rotterdam 3.5% Delivered'
+    plattssl['Spread']=platts[spct1]-platts[spct2]
+    sspplot=px.line(plattssl['Spread'],width=500,height=300,title=spct1+' Minus '+spct2 +' Spread')
+    sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    sspplot.update_layout(template=draft_template_half)
+    sspplot.update_layout(yaxis_title=None)
+    sspplot.update_layout(xaxis_title=None)
+    sspplot.update_layout(legend_title=None)
+    st.plotly_chart(sspplot)
 
 
 st.markdown('## **Rolling Contract Spread Between Crude Oil and Fuel Oil**')
@@ -366,6 +471,110 @@ mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plo
 mspplot.update_layout(template=draft_template)
 st.plotly_chart(mspplot)
 
+st.write('For Presentations')
+
+
+col3, col4 = st.columns(2)
+
+
+with col3:
+    ct1='SING_0.5'
+    ct2='Brent in Tonnes'
+    bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
+    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    mspplot.update_layout(template=draft_template_half)
+    mspplot.update_layout(yaxis_title=None)
+    mspplot.update_layout(xaxis_title=None)
+    mspplot.update_layout(legend_title=None)
+    st.plotly_chart(mspplot)
+
+    ct1='SIN_380'
+    ct2='Brent in Tonnes'
+    bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
+    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    mspplot.update_layout(template=draft_template_half)
+    mspplot.update_layout(yaxis_title=None)
+    mspplot.update_layout(xaxis_title=None)
+    mspplot.update_layout(legend_title=None)
+    st.plotly_chart(mspplot)
+
+    ct1='SING_0.5'
+    ct2='RDM_0.5'
+    bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
+    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    mspplot.update_layout(template=draft_template_half)
+    mspplot.update_layout(yaxis_title=None)
+    mspplot.update_layout(xaxis_title=None)
+    mspplot.update_layout(legend_title=None)
+    st.plotly_chart(mspplot)
+
+    ct1='SIN_380'
+    ct2='RDM35FO'
+    bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
+    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    mspplot.update_layout(template=draft_template_half)
+    mspplot.update_layout(yaxis_title=None)
+    mspplot.update_layout(xaxis_title=None)
+    mspplot.update_layout(legend_title=None)
+    st.plotly_chart(mspplot)
+
+
+with col4:
+    ct1='RDM_0.5'
+    ct2='Brent in Tonnes'
+    bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
+    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    mspplot.update_layout(template=draft_template_half)
+    mspplot.update_layout(yaxis_title=None)
+    mspplot.update_layout(xaxis_title=None)
+    mspplot.update_layout(legend_title=None)
+    st.plotly_chart(mspplot)
+
+    ct1='RDM35FO'
+    ct2='Brent in Tonnes'
+    bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
+    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    mspplot.update_layout(template=draft_template_half)
+    mspplot.update_layout(yaxis_title=None)
+    mspplot.update_layout(xaxis_title=None)
+    mspplot.update_layout(legend_title=None)
+    st.plotly_chart(mspplot)
+
+    ct1='SING_0.5'
+    ct2='SIN_380'
+    bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
+    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    mspplot.update_layout(template=draft_template_half)
+    mspplot.update_layout(yaxis_title=None)
+    mspplot.update_layout(xaxis_title=None)
+    mspplot.update_layout(legend_title=None)
+    st.plotly_chart(mspplot)
+
+    ct1='RDM_0.5'
+    ct2='RDM35FO'
+    bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
+    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
+    mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    mspplot.update_layout(template=draft_template_half)
+    mspplot.update_layout(yaxis_title=None)
+    mspplot.update_layout(xaxis_title=None)
+    mspplot.update_layout(legend_title=None)
+    st.plotly_chart(mspplot)
 
 
 
@@ -658,6 +867,9 @@ l2month=l2month.date()
 
 sllist3=st.multiselect('Select Dates',options=sing5_fct.columns.date,default=[tday,lday,l2day,lweek,l2week,lmonth,l2month],key='3')
 sing5_fctsl=sing5_fct[sllist3]
+sing5_fctsl_t=sing5_fctsl.transpose()
+sing5_fctsl_t.index=sing5_fctsl_t.index.date
+sing5_fctsl=sing5_fctsl_t.transpose()
 fctplot=px.line(sing5_fctsl,width=1000,height=500,title=type+' Forward Curve')
 fctplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_ticklen)
 fctplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
@@ -742,6 +954,41 @@ elif freq_r=='Quarterly':
     spotplot['data'][-1]['line']['color']='black'
     spotplot.update_layout(template=draft_template)
     st.plotly_chart(spotplot)
+
+
+st.write('For Presentations')
+
+
+col5, col6 = st.columns(2)
+
+with col5:
+    sing5_tsp=sing5_pt2[[tsp1_r,tsp2_r]]
+    sing5_tsp.dropna(inplace=True)
+    sing5_tsp['Spread']=sing5_tsp[tsp1_r]-sing5_tsp[tsp2_r]
+    tspplot=px.line(sing5_tsp[['Spread']],width=500,height=300,title=type+' Rolling Contract Time Spread: +'+str(tsp1_r)+'M minus +'+str(tsp2_r)+'M')
+    tspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/2,  ticklen=plot_ticklen/2)
+    tspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    tspplot.update_layout(template=draft_template_half)
+    tspplot.update_layout(yaxis_title=None)
+    tspplot.update_layout(xaxis_title=None)
+    tspplot.update_layout(legend_title=None)
+    st.plotly_chart(tspplot)
+
+with col6:
+    sing5_fctsl=sing5_fct[sllist3]
+    sing5_fctsl_t=sing5_fctsl.transpose()
+    sing5_fctsl_t.index=sing5_fctsl_t.index.date
+    sing5_fctsl=sing5_fctsl_t.transpose()
+    fctplot=px.line(sing5_fctsl,width=500,height=300,title=type+' Forward Curve')
+    fctplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/2,  ticklen=plot_ticklen/2)
+    fctplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
+    fctplot.update_layout(template=draft_template_half)
+    fctplot.update_layout(yaxis_title=None)
+    fctplot.update_layout(xaxis_title=None)
+    fctplot.update_layout(legend_title=None)
+    st.plotly_chart(fctplot)
+
+
 
 
 
