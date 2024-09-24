@@ -175,7 +175,7 @@ plot_title_font_color='dodgerblue'
 plot_title_font_size=25
 plot_legend_font_size=15
 plot_axis=dict(tickfont = dict(size=15))
-plot_axis_half=dict(tickfont = dict(size=10))
+plot_axis_half=dict(tickfont = dict(size=12))
 
 st.title('Bunker')
 st.text('Dry Bulk Freight (Bunker) Interactive Dashboard')
@@ -481,7 +481,7 @@ with col3:
     ct1='SING_0.5'
     ct2='Brent in Tonnes'
     bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
-    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot=px.line(bunker_major_pt['Spread'],width=660,height=330,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
     mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
     mspplot.update_layout(template=draft_template_half)
@@ -493,7 +493,7 @@ with col3:
     ct1='SIN_380'
     ct2='Brent in Tonnes'
     bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
-    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot=px.line(bunker_major_pt['Spread'],width=660,height=330,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
     mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
     mspplot.update_layout(template=draft_template_half)
@@ -505,7 +505,7 @@ with col3:
     ct1='SING_0.5'
     ct2='RDM_0.5'
     bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
-    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot=px.line(bunker_major_pt['Spread'],width=660,height=330,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
     mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
     mspplot.update_layout(template=draft_template_half)
@@ -517,7 +517,7 @@ with col3:
     ct1='SIN_380'
     ct2='RDM35FO'
     bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
-    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot=px.line(bunker_major_pt['Spread'],width=660,height=330,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
     mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
     mspplot.update_layout(template=draft_template_half)
@@ -531,7 +531,7 @@ with col4:
     ct1='RDM_0.5'
     ct2='Brent in Tonnes'
     bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
-    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot=px.line(bunker_major_pt['Spread'],width=660,height=330,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
     mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
     mspplot.update_layout(template=draft_template_half)
@@ -543,7 +543,7 @@ with col4:
     ct1='RDM35FO'
     ct2='Brent in Tonnes'
     bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
-    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot=px.line(bunker_major_pt['Spread'],width=660,height=330,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
     mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
     mspplot.update_layout(template=draft_template_half)
@@ -555,7 +555,7 @@ with col4:
     ct1='SING_0.5'
     ct2='SIN_380'
     bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
-    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot=px.line(bunker_major_pt['Spread'],width=660,height=330,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
     mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
     mspplot.update_layout(template=draft_template_half)
@@ -567,7 +567,7 @@ with col4:
     ct1='RDM_0.5'
     ct2='RDM35FO'
     bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
-    mspplot=px.line(bunker_major_pt['Spread'],width=500,height=300,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
+    mspplot=px.line(bunker_major_pt['Spread'],width=660,height=330,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
     mspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     mspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
     mspplot.update_layout(template=draft_template_half)
@@ -965,7 +965,7 @@ with col5:
     sing5_tsp=sing5_pt2[[tsp1_r,tsp2_r]]
     sing5_tsp.dropna(inplace=True)
     sing5_tsp['Spread']=sing5_tsp[tsp1_r]-sing5_tsp[tsp2_r]
-    tspplot=px.line(sing5_tsp[['Spread']],width=500,height=300,title=type+' Rolling Contract Time Spread: +'+str(tsp1_r)+'M minus +'+str(tsp2_r)+'M')
+    tspplot=px.line(sing5_tsp[['Spread']],width=660,height=330,title=type+' Rolling Contract Time Spread: +'+str(tsp1_r)+'M minus +'+str(tsp2_r)+'M')
     tspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/2,  ticklen=plot_ticklen/2)
     tspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
     tspplot.update_layout(template=draft_template_half)
@@ -979,7 +979,7 @@ with col6:
     sing5_fctsl_t=sing5_fctsl.transpose()
     sing5_fctsl_t.index=sing5_fctsl_t.index.date
     sing5_fctsl=sing5_fctsl_t.transpose()
-    fctplot=px.line(sing5_fctsl,width=500,height=300,title=type+' Forward Curve')
+    fctplot=px.line(sing5_fctsl,width=660,height=330,title=type+' Forward Curve')
     fctplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/2,  ticklen=plot_ticklen/2)
     fctplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
     fctplot.update_layout(template=draft_template_half)
