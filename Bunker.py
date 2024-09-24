@@ -335,7 +335,7 @@ with col1:
     spct2='Singapore 0.5% Cargo'
     plattssl['Spread']=platts[spct1]-platts[spct2]
     sspplot=px.line(plattssl['Spread'],width=500,height=300,title=spct1+' Minus '+spct2 +' Spread')
-    sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5
+    sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
     sspplot.update_layout(template=draft_template_half)
     sspplot.update_layout(yaxis_title=None)
