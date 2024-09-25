@@ -184,7 +184,7 @@ st.text('Dry Bulk Freight (Bunker) Interactive Dashboard')
 st.markdown('## **Crude Oil Price**')
 st.markdown('## **Candle Chart for Crude Oil Contracts**')
 
-bunker_ss=st.session_state['bunker_s']
+#bunker_ss=st.session_state['bunker_s']
 bunker_f=st.session_state['bunker_ff']
 
 
