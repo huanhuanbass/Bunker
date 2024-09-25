@@ -1054,7 +1054,7 @@ type2_pt2.rename(columns={'Spot':0},inplace=True)
 ssp_opt=list(set(type1_pt1.columns)&set(type2_pt1.columns))
 ssp_opt.sort()
 
-fcssp_multiopt=st.multiselect('Select Contracts for Forward Curve',options=ssp_opt,default=['Spot',m0,m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12,m15,m18,m21,m24],key='10')
+fcssp_multiopt=st.multiselect('Select Contracts for Forward Curve',options=ssp_opt,default=['Spot',m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12,m15,m18,m21,m24],key='10')
 type1_fcssp=type1_pt1[fcssp_multiopt]
 type2_fcssp=type2_pt1[fcssp_multiopt]
 
