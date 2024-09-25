@@ -1058,6 +1058,7 @@ fcssp_multiopt=st.multiselect('Select Contracts for Forward Curve',options=ssp_o
 type1_fcssp=type1_pt1[fcssp_multiopt]
 type2_fcssp=type2_pt1[fcssp_multiopt]
 
+
 fcssp_opt=list(set(type1_fcssp.index)&set(type2_fcssp.index))
 fcssp_opt.sort(reverse=True)
 fcssp=st.selectbox('Select Date for Forward Curve',options=fcssp_opt)
@@ -1071,7 +1072,7 @@ type2_fcssp.columns=[type2]
 cp_fcssp=pd.merge(type1_fcssp,type2_fcssp,how='outer',left_index=True,right_index=True)
 
 
-fcsspplot=px.line(cp_fcssp,width=1000,height=500,title=type+' Forward Curve Type Spread')
+fcsspplot=px.line(cp_fcssp,width=1000,height=500,title=' Forward Curve Type Spread')
 fcsspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_ticklen)
 fcsspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size,legend_font_size=plot_legend_font_size,xaxis=plot_axis,yaxis=plot_axis)
 fcsspplot.update_layout(template=draft_template)
