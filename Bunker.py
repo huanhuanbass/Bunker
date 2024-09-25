@@ -1015,7 +1015,9 @@ type1_s.sort_index(ascending=True,inplace=True)
 type1_s=type1_s[['Amount']]
 
 type1_s.rename(columns={'Amount':'Spot'},inplace=True)
+type1_s.reset_index(inplace=True)
 type1_s.drop_duplicates(inplace=True)
+type1_s.set_index('Date',inplace=True)
 
 
 type1_pt1=pd.merge(type1_s,type1_pt1,left_index=True,right_index=True,how='outer')
@@ -1039,7 +1041,9 @@ type2_s.sort_index(ascending=True,inplace=True)
 type2_s=type2_s[['Amount']]
 
 type2_s.rename(columns={'Amount':'Spot'},inplace=True)
+type2_s.reset_index(inplace=True)
 type2_s.drop_duplicates(inplace=True)
+type2_s.set_index('Date',inplace=True)
 
 
 type2_pt1=pd.merge(type2_s,type2_pt1,left_index=True,right_index=True,how='outer')
