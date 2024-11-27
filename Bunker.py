@@ -279,7 +279,7 @@ st.markdown('## **Fuel Oil Spot Price**')
 
 @st.cache_data(ttl='24h')
 def load_platts_data():
-    platts=pd.read_excel('Fuel Oil PLatts Historical Data.xlsx',skiprows=[1,2,3,4,5,6],index_col=0)
+    platts=pd.read_excel('Fuel Oil Platts Historical Data.xlsx',skiprows=[1,2,3,4,5,6],index_col=0)
 
     return platts
 
@@ -315,7 +315,7 @@ plattsplot.update_layout(template=draft_template)
 st.plotly_chart(plattsplot)
 
 st.markdown('#### **----Spot Spread**')
-spct1=st.selectbox('Select Product 1',options=platts.columns.values,key='spct1')
+spct1=st.selectbox('Select Product 1',options=list(['Singapore 0.5% Delivered']+list(platts.columns.values)),key='spct1')
 spctlist=list(platts.columns)
 spctlist.remove(spct1)
 spct2=st.selectbox('Select Product 2',options=spctlist,key='spct2')
@@ -462,7 +462,7 @@ st.plotly_chart(subplot_fig)
 
 st.markdown('#### **----Contract Spread**')
 ct1=st.selectbox('Select Contract 1',options=['SING_0.5','RDM_0.5','SIN_380','RDM35FO','WTI in Tonnes','Brent in Tonnes','WTI','Brent'],key='9991')
-ct2=st.selectbox('Select Contract 2',options=['Brent in Tonnes','WTI in Tonnes','Brent','WTI','RDM35FO','RDM_0.5','SING_0.5','SIN_380'],key='9992')
+ct2=st.selectbox('Select Contract 2',options=['SIN_380','Brent in Tonnes','WTI in Tonnes','Brent','WTI','RDM35FO','RDM_0.5','SING_0.5'],key='9992')
 
 bunker_major_pt['Spread']=bunker_major_pt[ct1]-bunker_major_pt[ct2]
 mspplot=px.line(bunker_major_pt['Spread'],width=1000,height=500,title=ct1+' Minus '+ct2 +' Spread (+'+str(rolling_gap)+'M Rolling Contract for Fuel Oil)')
