@@ -17,7 +17,6 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
-import yfinance as yf
 import requests
 
 import plotly.graph_objects as go
