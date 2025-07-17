@@ -319,7 +319,7 @@ spctlist=list(platts.columns)
 spctlist.remove(spct1)
 spct2=st.selectbox('Select Product 2',options=spctlist,key='spct2')
 
-st.write(plattssl)
+
 plattssl['Spread']=plattssl[spct1]-plattssl[spct2]
 sspplot=px.line(plattssl['Spread'],width=1000,height=500,title=spct1+' Minus '+spct2 +' Spread')
 sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_ticklen)
@@ -333,7 +333,7 @@ col1, col2 = st.columns(2)
 with col1:
     spct1='Singapore 0.5% Delivered'
     spct2='Singapore 0.5% Cargo'
-    plattssl['Spread']=platts[spct1]-platts[spct2]
+    plattssl['Spread']=plattssl[spct1]-plattssl[spct2]
     sspplot=px.line(plattssl['Spread'],width=660,height=330,title=spct1+' Minus '+spct2 +' Spread')
     sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
@@ -345,7 +345,7 @@ with col1:
 
     spct1='Singapore 3.5% Delivered'
     spct2='Singapore 3.5% Cargo'
-    plattssl['Spread']=platts[spct1]-platts[spct2]
+    plattssl['Spread']=plattssl[spct1]-plattssl[spct2]
     sspplot=px.line(plattssl['Spread'],width=660,height=330,title=spct1+' Minus '+spct2 +' Spread')
     sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
@@ -357,7 +357,7 @@ with col1:
 
     spct1='Rotterdam 0.5% Delivered'
     spct2='Rotterdam 0.5% Barge'
-    plattssl['Spread']=platts[spct1]-platts[spct2]
+    plattssl['Spread']=plattssl[spct1]-plattssl[spct2]
     sspplot=px.line(plattssl['Spread'],width=660,height=330,title=spct1+' Minus '+spct2 +' Spread')
     sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
@@ -369,7 +369,7 @@ with col1:
 
     spct1='Rotterdam 3.5% Delivered'
     spct2='Rotterdam 3.5% Barge'
-    plattssl['Spread']=platts[spct1]-platts[spct2]
+    plattssl['Spread']=plattssl[spct1]-plattssl[spct2]
     sspplot=px.line(plattssl['Spread'],width=660,height=330,title=spct1+' Minus '+spct2 +' Spread')
     sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
@@ -382,7 +382,7 @@ with col1:
 with col2:
     spct1='Singapore 0.5% Delivered'
     spct2='Rotterdam 0.5% Delivered'
-    plattssl['Spread']=platts[spct1]-platts[spct2]
+    plattssl['Spread']=plattssl[spct1]-plattssl[spct2]
     sspplot=px.line(plattssl['Spread'],width=660,height=330,title=spct1+' Minus '+spct2 +' Spread')
     sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
@@ -394,7 +394,7 @@ with col2:
 
     spct1='Singapore 0.5% Delivered'
     spct2='Singapore 3.5% Delivered'
-    plattssl['Spread']=platts[spct1]-platts[spct2]
+    plattssl['Spread']=plattssl[spct1]-plattssl[spct2]
     sspplot=px.line(plattssl['Spread'],width=660,height=330,title=spct1+' Minus '+spct2 +' Spread')
     sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
@@ -406,7 +406,7 @@ with col2:
 
     spct1='Rotterdam 0.5% Delivered'
     spct2='Rotterdam 3.5% Delivered'
-    plattssl['Spread']=platts[spct1]-platts[spct2]
+    plattssl['Spread']=plattssl[spct1]-plattssl[spct2]
     sspplot=px.line(plattssl['Spread'],width=660,height=330,title=spct1+' Minus '+spct2 +' Spread')
     sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth/1.5,  ticklen=plot_ticklen/1.5)
     sspplot.update_layout(title_font_color=plot_title_font_color,title_font_size=plot_title_font_size/1.5,legend_font_size=plot_legend_font_size/1.5,xaxis=plot_axis_half,yaxis=plot_axis_half)
