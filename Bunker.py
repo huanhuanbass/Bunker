@@ -630,11 +630,11 @@ sing5_pt1=pd.merge(sing5_s,sing5_pt1,left_index=True,right_index=True,how='outer
 
 
 idx=pd.bdate_range(start='1/1/1998', end=tday)
-sing5_pt1=sing5_pt1.reindex(idx,method='ffill')
+#sing5_pt1=sing5_pt1.reindex(idx,method='ffill')
 
 
 sing5_pt2=pd.merge(sing5_s,sing5_pt2,left_index=True,right_index=True,how='outer')
-sing5_pt2=sing5_pt2.reindex(idx,method='ffill')
+#sing5_pt2=sing5_pt2.reindex(idx,method='ffill')
 sing5_pt2.rename(columns={'Spot':0},inplace=True)
 
 
