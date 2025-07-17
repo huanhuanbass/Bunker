@@ -319,6 +319,7 @@ spctlist=list(platts.columns)
 spctlist.remove(spct1)
 spct2=st.selectbox('Select Product 2',options=spctlist,key='spct2')
 
+st.write(plattssl)
 plattssl['Spread']=platts[spct1]-platts[spct2]
 sspplot=px.line(plattssl['Spread'],width=1000,height=500,title=spct1+' Minus '+spct2 +' Spread')
 sspplot.update_xaxes(ticks=plot_ticks, tickwidth=plot_tickwidth,  ticklen=plot_ticklen)
